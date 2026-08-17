@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { label: "Product", href: "#product" },
-  { label: "Solutions", href: "#solutions" },
+  { label: "Workspace", href: "#console" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Docs", href: "#docs" },
+  { label: "Live Demo", href: "/dashboard" },
 ];
 
 export function SiteNav() {
