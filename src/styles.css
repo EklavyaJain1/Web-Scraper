@@ -46,6 +46,8 @@
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-hairline: var(--hairline);
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
