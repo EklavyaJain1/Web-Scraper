@@ -160,7 +160,7 @@ export function IntelligenceCanvas() {
         </aside>
 
         {/* Canvas */}
-        <main className="relative min-h-[520px] overflow-hidden bg-background">
+        <main className="relative min-h-[520px] overflow-hidden bg-background lg:h-[calc(100vh-61px)]">
           <div className="absolute inset-0 dot-grid" />
           <div className="relative mx-auto h-full w-full max-w-[980px] px-4 py-6">
             <div className="relative h-[440px] w-full">
