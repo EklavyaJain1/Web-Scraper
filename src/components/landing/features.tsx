@@ -148,7 +148,7 @@ export function FeatureGrid() {
 
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {FEATURES.map((f, i) => (
-          <Reveal key={f.title} delay={i * 70} className={f.wide ? "md:col-span-2" : undefined}>
+          <Reveal key={f.title} delay={i * 70} className={f.wide ? "md:col-span-2" : ""}>
             <div className="group h-full rounded-3xl border border-hairline bg-card p-6 shadow-soft transition-transform hover:-translate-y-1">
               <span className="grid size-10 place-items-center rounded-2xl bg-brand-tint text-accent-foreground">
                 <f.icon className="size-5" />
