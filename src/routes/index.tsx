@@ -1,19 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AnnouncementBar, SiteNav } from "@/components/landing/header";
-import { Hero, Stats } from "@/components/landing/hero";
-import { Showcase } from "@/components/landing/showcase";
-import {
-  BuildSection,
-  FeatureGrid,
-  Integrations,
-  Security,
-} from "@/components/landing/features";
-import { Testimonials, UseCases } from "@/components/landing/social";
-import { Faq, FinalCta, Pricing, SiteFooter } from "@/components/landing/closing";
+import { SiteNav } from "@/components/landing/header";
+import { Hero } from "@/components/landing/hero";
+import { Pipeline } from "@/components/landing/pipeline";
+import { Bento } from "@/components/landing/bento";
+import { FinalCta } from "@/components/landing/cta";
+import { Faq, Pricing, SiteFooter } from "@/components/landing/closing";
 
-const TITLE = "Web Miner — Build, run and scale web scrapers";
+const TITLE = "Web Miner — Automate scraping workflows with AI";
 const DESCRIPTION =
-  "Web Miner turns any website into clean, structured data. Build extraction flows visually, run them on rotating proxies, and deliver results to your warehouse.";
+  "Web Miner turns any website into clean, structured data. Build extraction pipelines on a visual canvas, run them on rotating proxies, and deliver JSON to your warehouse.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +18,6 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -47,18 +41,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <AnnouncementBar />
       <SiteNav />
       <main>
         <Hero />
-        <Stats />
-        <Showcase />
-        <BuildSection />
-        <FeatureGrid />
-        <Integrations />
-        <UseCases />
-        <Testimonials />
-        <Security />
+        <Pipeline />
+        <Bento />
         <Pricing />
         <Faq />
         <FinalCta />
