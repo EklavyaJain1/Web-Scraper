@@ -3,6 +3,8 @@ import { SiteNav } from "@/components/landing/header";
 import { Hero } from "@/components/landing/hero";
 import { Pipeline } from "@/components/landing/pipeline";
 import { Bento } from "@/components/landing/bento";
+import { Console } from "@/components/landing/console";
+import { Insights } from "@/components/landing/insights";
 import { FinalCta } from "@/components/landing/cta";
 import { Faq, Pricing, SiteFooter } from "@/components/landing/closing";
 
@@ -45,6 +47,8 @@ function Index() {
       <main>
         <Hero />
         <Pipeline />
+        <Console />
+        <Insights />
         <Bento />
         <Pricing />
         <Faq />

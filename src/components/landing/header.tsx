@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { label: "Product", href: "#product" },
-  { label: "Solutions", href: "#solutions" },
+  { label: "Workspace", href: "#console" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Docs", href: "#docs" },
+  { label: "Live Demo", href: "/dashboard" },
 ];
 
 export function SiteNav() {
@@ -38,7 +38,7 @@ export function SiteNav() {
             <a
               key={item.label}
               href={item.href}
-              className="rounded-full px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink"
+              className="whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink"
             >
               {item.label}
             </a>
