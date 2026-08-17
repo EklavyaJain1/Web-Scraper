@@ -1,24 +1,69 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AnnouncementBar, SiteNav } from "@/components/landing/header";
+import { Hero, Stats } from "@/components/landing/hero";
+import { Showcase } from "@/components/landing/showcase";
+import {
+  BuildSection,
+  FeatureGrid,
+  Integrations,
+  Security,
+} from "@/components/landing/features";
+import { Testimonials, UseCases } from "@/components/landing/social";
+import { Faq, FinalCta, Pricing, SiteFooter } from "@/components/landing/closing";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITLE = "Web Miner — Build, run and scale web scrapers";
+const DESCRIPTION =
+  "Web Miner turns any website into clean, structured data. Build extraction flows visually, run them on rotating proxies, and deliver results to your warehouse.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Web Miner",
+          applicationCategory: "BusinessApplication",
+          description: DESCRIPTION,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }),
+      },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background">
+      <AnnouncementBar />
+      <SiteNav />
+      <main>
+        <Hero />
+        <Stats />
+        <Showcase />
+        <BuildSection />
+        <FeatureGrid />
+        <Integrations />
+        <UseCases />
+        <Testimonials />
+        <Security />
+        <Pricing />
+        <Faq />
+        <FinalCta />
+      </main>
+      <SiteFooter />
     </div>
   );
 }
