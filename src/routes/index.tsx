@@ -47,6 +47,8 @@ function Index() {
       <main>
         <Hero />
         <Pipeline />
+        <Console />
+        <Insights />
         <Bento />
         <Pricing />
         <Faq />
