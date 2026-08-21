@@ -5,20 +5,17 @@ function CostCard() {
   return (
     <div className="relative grid h-[260px] place-items-center overflow-hidden rounded-2xl border border-hairline bg-surface">
       <div className="absolute inset-0 dot-grid opacity-60" />
-      {[
-        "left-6 top-8",
-        "right-8 top-12",
-        "left-10 bottom-10",
-        "right-6 bottom-14",
-      ].map((pos, i) => (
-        <span
-          key={pos}
-          className={`absolute ${pos} animate-float-slow grid size-10 place-items-center rounded-xl border border-hairline bg-card shadow-soft`}
-          style={{ animationDelay: `${i * 0.7}s` }}
-        >
-          <Scale className="size-4 text-ink/25" />
-        </span>
-      ))}
+      {["left-6 top-8", "right-8 top-12", "left-10 bottom-10", "right-6 bottom-14"].map(
+        (pos, i) => (
+          <span
+            key={pos}
+            className={`absolute ${pos} animate-float-slow grid size-10 place-items-center rounded-xl border border-hairline bg-card shadow-soft`}
+            style={{ animationDelay: `${i * 0.7}s` }}
+          >
+            <Scale className="size-4 text-ink/25" />
+          </span>
+        ),
+      )}
       <div className="relative text-center">
         <p className="text-[12.5px] text-muted-foreground">Research hours per competitor</p>
         <p className="mt-1 font-display text-5xl font-extrabold tracking-tight text-ink">

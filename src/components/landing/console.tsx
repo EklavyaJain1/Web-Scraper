@@ -1,34 +1,51 @@
 import {
   Activity,
   Bot,
-  Briefcase,
-  Building2,
-  CircleDot,
-  Cpu,
-  Globe,
-  Newspaper,
+  CheckCircle2,
+  FileCode2,
+  Globe2,
+  MapPin,
   ShieldCheck,
-  Tag,
+  Terminal,
+  Wand2,
+  RotateCcw,
 } from "lucide-react";
 import { Eyebrow, Reveal, Section } from "./primitives";
+import { CobeGlobe } from "./cobe-globe";
 
-const TARGETS = [
-  { group: "Portfolio", items: ["Aurelia Grand", "Maison Lume", "The Verano"] },
-  { group: "Watchlist", items: ["Cove & Ember", "Hotel Selvage"] },
-];
-
-const RUN_LOG = [
-  { icon: Tag, text: "Reading public rate card — 42 room types" },
-  { icon: Briefcase, text: "Parsing public careers board — 18 open roles" },
-  { icon: Newspaper, text: "Indexing press releases — 6 since April" },
-  { icon: Cpu, text: "Gemini synthesis — cross-signal reasoning" },
-];
-
-const SIGNALS = [
-  { signal: "Median ADR", value: "€412", delta: "+10.4%", trend: "up" },
-  { signal: "Culinary hires", value: "5 roles", delta: "3 chefs de partie", trend: "up" },
-  { signal: "F&B mentions", value: "9 press", delta: "3x since Jan", trend: "up" },
-  { signal: "Spa inventory", value: "unchanged", delta: "flat", trend: "flat" },
+const LIVE_ACTIVITY = [
+  {
+    icon: Globe2,
+    text: "Scraped anthropic.com/news",
+    time: "2m ago",
+    agent: "Bright Data Unlocker",
+    statusColor: "text-brand",
+    bgColor: "bg-brand/10",
+  },
+  {
+    icon: RotateCcw,
+    text: "Self-healed 3 selectors on cursor.sh",
+    time: "9m ago",
+    agent: "bdata heal",
+    statusColor: "text-amber-500",
+    bgColor: "bg-amber-500/10",
+  },
+  {
+    icon: Wand2,
+    text: "Predicted next Anthropic release",
+    time: "24m ago",
+    agent: "Mistral Large",
+    statusColor: "text-purple-500",
+    bgColor: "bg-purple-500/10",
+  },
+  {
+    icon: MapPin,
+    text: "Routed via JP proxy for kimi.ai",
+    time: "1h ago",
+    agent: "Geo Network",
+    statusColor: "text-brand",
+    bgColor: "bg-brand/10",
+  },
 ];
 
 export function Console() {
@@ -38,156 +55,102 @@ export function Console() {
         <div className="max-w-2xl">
           <Eyebrow>Intelligence workspace</Eyebrow>
           <h2 className="mt-5 text-[34px] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-[46px]">
-            Complete context on every competitor.
+            Enterprise scraping at scale.
           </h2>
           <p className="mt-5 text-[16px] leading-relaxed text-ink-soft">
-            Public pricing, public hiring and public announcements flow into one brain — and come
-            back out as a prediction your revenue team can act on this week.
+            Monitor competitors, route traffic globally, and auto-heal scrapers with AI. 
+            All powered by the Bright Data CLI and MCP integration.
           </p>
         </div>
       </Reveal>
 
       <Reveal delay={120}>
-        <div className="mt-10 overflow-hidden rounded-[26px] border border-hairline bg-card shadow-lift">
-          <div className="flex items-center gap-2 border-b border-hairline bg-surface px-4 py-2.5">
-            <span className="size-2.5 rounded-full bg-surface-2" />
-            <span className="size-2.5 rounded-full bg-surface-2" />
-            <span className="size-2.5 rounded-full bg-surface-2" />
-            <span className="ml-2 truncate text-[12px] text-muted-foreground">
-              aurelia-grand · competitive-intelligence
-            </span>
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {/* LEFT PANEL: Globe / Geo Network */}
+          <div className="flex flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift">
+            <div className="p-8 pb-0 flex-1 flex flex-col justify-center">
+              <CobeGlobe />
+            </div>
+            
+            <div className="border-t border-hairline bg-surface p-6 mt-4">
+              <h3 className="flex items-center gap-2 text-[18px] font-bold text-ink">
+                <Globe2 className="size-5 text-brand" />
+                Global Proxy Network
+              </h3>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
+                Route scraping traffic through residential proxies in 195+ countries. Bypass geo-restrictions and get localized search results effortlessly.
+              </p>
+            </div>
           </div>
 
-          <div className="grid lg:grid-cols-[210px_minmax(0,1fr)_260px]">
-            <aside className="border-b border-hairline bg-surface p-3 lg:border-b-0 lg:border-r">
-              {TARGETS.map((g) => (
-                <div key={g.group} className="mb-4">
-                  <p className="px-2 pb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    {g.group}
-                  </p>
-                  {g.items.map((item, i) => (
-                    <div
-                      key={item}
-                      className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-[13px] font-medium ${
-                        i === 0 && g.group === "Portfolio"
-                          ? "bg-card text-ink shadow-soft"
-                          : "text-ink-soft"
-                      }`}
-                    >
-                      <Building2 className="size-3.5 shrink-0 text-brand" />
-                      <span className="truncate">{item}</span>
-                    </div>
-                  ))}
+          {/* RIGHT PANELS */}
+          <div className="grid gap-6">
+            {/* TOP RIGHT: Skills / Scraper Config */}
+            <div className="flex flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift">
+              <div className="p-6">
+                <div className="flex items-center gap-2 border-b border-hairline pb-3">
+                  <span className="size-2.5 rounded-full bg-surface-2" />
+                  <span className="size-2.5 rounded-full bg-surface-2" />
+                  <span className="size-2.5 rounded-full bg-surface-2" />
+                  <span className="ml-2 flex items-center gap-1.5 text-[12px] font-medium text-muted-foreground">
+                    <FileCode2 className="size-3.5" /> anthropic-releases.yaml
+                  </span>
                 </div>
-              ))}
-            </aside>
-
-            <div className="min-w-0 border-b border-hairline p-5 lg:border-b-0 lg:border-r">
-              <div className="flex items-center gap-2.5">
-                <span className="grid size-9 place-items-center rounded-xl bg-brand-tint text-brand">
-                  <Bot className="size-4.5" />
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-[17px] font-bold tracking-tight text-ink">
-                    Strategy Analyst Agent
-                  </p>
-                  <p className="truncate text-[12.5px] text-muted-foreground">
-                    Gemini 2.5 Pro · public sources only
-                  </p>
+                <div className="mt-4 rounded-lg bg-surface-2 p-4 font-mono text-[11px] leading-[1.6]">
+                  <div className="text-muted-foreground"># Scraper Configuration</div>
+                  <div className="text-brand mt-2">collector_id:</div>
+                  <div className="text-ink pl-4">c_mszzyatn1c1i3h2ypz <span className="text-muted-foreground ml-2">// Auto-generated by bdata CLI</span></div>
+                  <div className="text-brand mt-1">target:</div>
+                  <div className="text-ink pl-4">https://anthropic.com/news</div>
+                  <div className="text-brand mt-1">schedule:</div>
+                  <div className="text-ink pl-4">daily_9am</div>
+                  <div className="text-brand mt-1">self_healing:</div>
+                  <div className="text-success pl-4">enabled</div>
                 </div>
               </div>
-
-              <div className="mt-5 rounded-xl border border-hairline bg-surface p-3 text-[13.5px] text-ink">
-                What is Aurelia Grand preparing for Q4?
-              </div>
-
-              <ul className="mt-4 space-y-2">
-                {RUN_LOG.map((r) => (
-                  <li
-                    key={r.text}
-                    className="flex items-center gap-2 text-[13px] text-ink-soft"
-                  >
-                    <r.icon className="size-3.5 shrink-0 text-brand" />
-                    <span className="truncate">{r.text}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-5 overflow-hidden rounded-xl border border-hairline">
-                <table className="w-full text-left text-[12.5px]">
-                  <thead className="bg-surface text-muted-foreground">
-                    <tr>
-                      <th className="px-3 py-2 font-semibold">Signal</th>
-                      <th className="px-3 py-2 font-semibold">Value</th>
-                      <th className="px-3 py-2 font-semibold">Movement</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {SIGNALS.map((s) => (
-                      <tr key={s.signal} className="border-t border-hairline">
-                        <td className="px-3 py-2 font-medium text-ink">{s.signal}</td>
-                        <td className="px-3 py-2 text-ink-soft">{s.value}</td>
-                        <td
-                          className={`px-3 py-2 ${s.trend === "up" ? "text-brand" : "text-muted-foreground"}`}
-                        >
-                          {s.delta}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="mt-4 rounded-xl border border-brand/30 bg-brand-tint p-3.5">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-accent-foreground">
-                  Predicted move
-                </p>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-ink">
-                  Aurelia Grand is repositioning toward a fine-dining led experience — five culinary
-                  hires plus a 10.4% rate lift point to a restaurant relaunch before December.
+              
+              <div className="border-t border-hairline bg-surface p-6">
+                <h3 className="flex items-center gap-2 text-[18px] font-bold text-ink">
+                  <Terminal className="size-5 text-brand" />
+                  Self-Healing Scrapers
+                </h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
+                  Scrapers write their own repair logic, auto-heal broken selectors via the <code className="text-brand bg-brand/10 px-1.5 py-0.5 rounded font-mono text-xs">bdata heal</code> CLI command, and adapt to layout changes.
                 </p>
               </div>
             </div>
 
-            <aside className="p-4">
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Sources
-              </p>
-              <div className="mt-2 space-y-1.5">
-                {[
-                  { icon: Tag, label: "Public pricing page" },
-                  { icon: Briefcase, label: "Public careers board" },
-                  { icon: Newspaper, label: "Press releases" },
-                  { icon: Globe, label: "Sitemap discovery" },
-                ].map((s) => (
-                  <div
-                    key={s.label}
-                    className="flex items-center gap-2 rounded-lg border border-hairline bg-surface px-2.5 py-2 text-[12.5px] text-ink"
-                  >
-                    <s.icon className="size-3.5 shrink-0 text-brand" />
-                    <span className="truncate">{s.label}</span>
+            {/* BOTTOM RIGHT: Live Activity */}
+            <div className="flex flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift">
+              <div className="p-6 space-y-3">
+                {LIVE_ACTIVITY.map((activity, idx) => (
+                  <div key={idx} className="flex items-center justify-between rounded-xl border border-hairline bg-surface p-3 transition-colors hover:bg-surface-2">
+                    <div className="flex items-center gap-3">
+                      <span className={`grid size-8 shrink-0 place-items-center rounded-lg ${activity.bgColor} ${activity.statusColor}`}>
+                        <activity.icon className="size-4" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-[13px] font-semibold text-ink">{activity.text}</p>
+                        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-0.5">
+                          <Bot className="size-3" /> {activity.agent}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-medium text-muted-foreground whitespace-nowrap">{activity.time}</span>
                   </div>
                 ))}
               </div>
-
-              <p className="mt-5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Collection health
-              </p>
-              <div className="mt-2 space-y-2">
-                <div className="flex items-center gap-2 rounded-lg border border-hairline px-2.5 py-2 text-[12.5px] text-ink">
-                  <ShieldCheck className="size-3.5 shrink-0 text-brand" />
-                  <span className="truncate">Compliant sources only</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-lg border border-hairline px-2.5 py-2 text-[12.5px] text-ink">
-                  <CircleDot className="size-3.5 shrink-0 animate-pulse text-chart-1" />
-                  <span className="truncate">Self-healing selectors</span>
-                </div>
-                <div className="flex items-center gap-2 rounded-lg border border-hairline px-2.5 py-2 text-[12.5px] text-ink">
-                  <Activity className="size-3.5 shrink-0 text-brand" />
-                  <span className="truncate">Last run 12m ago</span>
-                </div>
+              
+              <div className="border-t border-hairline bg-surface p-6">
+                <h3 className="flex items-center gap-2 text-[18px] font-bold text-ink">
+                  <Activity className="size-5 text-brand" />
+                  Live Activity
+                </h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
+                  See every scrape, heal, and prediction your pipeline runs in real-time, fully integrated with your downstream RAG or dashboard.
+                </p>
               </div>
-            </aside>
+            </div>
           </div>
         </div>
       </Reveal>

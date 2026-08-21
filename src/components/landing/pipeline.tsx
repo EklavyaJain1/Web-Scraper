@@ -8,47 +8,99 @@ import {
   MousePointer2,
   Play,
   Repeat,
+  Server,
   Timer,
+  BrainCircuit,
+  MapPin,
+  Wand2
 } from "lucide-react";
+import { useState } from "react";
 import { Eyebrow, Reveal, Section } from "./primitives";
+import { 
+  TriggerModal, 
+  ScraperStudioModal, 
+  SelfHealingModal, 
+  MCPOutputModal, 
+  LLMExtractModal,
+  FilterModal,
+  WarehouseModal,
+  GeoNetworkModal,
+  MistralPredictionModal
+} from "./node-modals";
+import { Button } from "../ui/button";
 
 const TOOLS = [
   { icon: Play, label: "Trigger" },
+  { icon: MapPin, label: "Geo Network" },
   { icon: Globe, label: "Web Scraper" },
   { icon: Bot, label: "LLM Extract" },
   { icon: Filter, label: "Filter" },
-  { icon: Repeat, label: "Loop" },
+  { icon: Wand2, label: "Prediction" },
   { icon: Database, label: "Warehouse" },
 ];
 
 const STEPS = [
   {
+    id: "trigger",
     icon: Timer,
     kind: "Trigger",
-    title: "Every day at 06:00",
-    detail: "Schedule · UTC",
+    title: "Schedule: Daily at 9AM",
+    detail: "Run automatically to check AI company blogs",
   },
   {
+    id: "geo",
+    icon: MapPin,
+    kind: "Geo Network",
+    title: "US Residential Proxies",
+    detail: "Route traffic to avoid localized blocks",
+  },
+  {
+    id: "scraper",
     icon: Globe,
     kind: "Web Scraper",
-    title: "Crawl competitor catalog",
-    detail: "1,240 pages · rotating proxies",
+    title: "AI Release Scraper",
+    detail: "Target: Anthropic, OpenAI, Kimi, Cursor",
   },
   {
-    icon: Bot,
-    kind: "LLM Extraction",
-    title: "Extract price, stock, SKU",
-    detail: "Schema validated · 99.4% match",
+    id: "llm",
+    icon: BrainCircuit,
+    kind: "LLM Extract",
+    title: "Changelog Parser",
+    detail: "GPT-4o extracts new models & context windows",
+  },
+  {
+    id: "filter",
+    icon: Filter,
+    kind: "Filter",
+    title: "Major Updates Only",
+    detail: "Ignore minor patches and typo fixes",
+  },
+  {
+    id: "predict",
+    icon: Wand2,
+    kind: "Future Prediction",
+    title: "Mistral Trend Analysis",
+    detail: "Predict next release cycle (mistral-large-latest)",
+  },
+  {
+    id: "warehouse",
+    icon: Database,
+    kind: "Warehouse",
+    title: "Slack & Supabase",
+    detail: "Alert engineering team & log to database",
   },
 ];
 
 const BULLETS = [
-  "Compose scrapers from typed nodes — no glue code.",
-  "Preview every step with live sample output.",
-  "Version, branch and roll back any pipeline.",
+  "✓ Track new AI model releases across Anthropic, OpenAI, Kimi, and Cursor.",
+  "✓ Filter out noise by applying custom logical operators on LLM-extracted changelogs.",
+  "✓ Send instant alerts to your engineering Slack channel when context windows or pricing change.",
 ];
 
+
 export function Pipeline() {
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
   return (
     <Section id="product" className="py-16 md:py-24">
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -56,11 +108,10 @@ export function Pipeline() {
           <Reveal>
             <Eyebrow>Visual builder</Eyebrow>
             <h2 className="mt-5 text-[34px] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-[46px]">
-              Drag, drop, and automate without code.
+              Automate AI Model & API Monitoring.
             </h2>
             <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-ink-soft">
-              Every scraper is a pipeline of nodes on a canvas. Connect a trigger to a crawler, hand
-              the HTML to an AI extractor, and land structured rows in your warehouse.
+              Schedule scraping jobs to track the latest API releases and pricing changes from top AI companies. Automatically parse unstructured blog posts with LLMs, filter for major updates, and alert your engineering team instantly.
             </p>
             <ul className="mt-7 space-y-3">
               {BULLETS.map((b) => (
@@ -105,55 +156,74 @@ export function Pipeline() {
               <div className="relative dot-grid p-4 sm:p-6">
                 <div className="space-y-4">
                   {STEPS.map((s, i) => (
-                    <div key={s.kind} className="relative">
-                      <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-soft">
-                        <div className="flex items-center gap-2.5">
-                          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand-tint text-brand">
-                            <s.icon className="size-4" />
-                          </span>
-                          <div className="min-w-0">
-                            <p className="truncate text-[10.5px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                              {s.kind}
-                            </p>
-                            <p className="truncate text-[13.5px] font-semibold text-ink">
-                              {s.title}
-                            </p>
+                    <div key={s.id}>
+                      <div 
+                        className="relative cursor-pointer"
+                        onClick={() => setActiveModal(s.id)}
+                      >
+                        <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-soft transition-all hover:border-brand/50 hover:shadow-lift hover:scale-[1.01] active:scale-[0.99] group">
+                          <div className="flex items-center gap-2.5">
+                            <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand-tint text-brand">
+                              <s.icon className="size-4" />
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate text-[10.5px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                                {s.kind}
+                              </p>
+                              <p className="truncate text-[13.5px] font-semibold text-ink">
+                                {s.title}
+                              </p>
+                            </div>
                           </div>
+                          <p className="mt-2 text-[12px] text-muted-foreground">
+                            {s.detail}
+                          </p>
+                          <span className="mt-2.5 block text-[9px] font-bold text-muted-foreground tracking-[0.05em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">Click to configure</span>
                         </div>
-                        <p className="mt-2 truncate text-[12px] text-muted-foreground">
-                          {s.detail}
-                        </p>
+                        {i < STEPS.length - 1 && (
+                          <svg
+                            className="mx-auto block h-8 w-6"
+                            viewBox="0 0 24 32"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M12 0 C 12 16, 12 16, 12 32"
+                              className="animate-dash stroke-brand"
+                              fill="none"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        )}
                       </div>
-                      {i < STEPS.length - 1 && (
-                        <svg
-                          className="mx-auto block h-8 w-6"
-                          viewBox="0 0 24 32"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d="M12 0 C 12 16, 12 16, 12 32"
-                            className="animate-dash stroke-brand"
-                            fill="none"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                      )}
                     </div>
                   ))}
 
                   <div className="rounded-2xl border border-hairline bg-surface p-3.5">
                     <p className="flex items-center gap-2 text-[12px] font-semibold text-ink">
-                      <Braces className="size-3.5 text-brand" /> Output preview
+                      <Database className="size-3.5 text-brand" /> Database Output Preview
                     </p>
                     <pre className="mt-2 overflow-x-auto font-mono text-[11px] leading-relaxed text-ink-soft">
-{`{ "sku": "NW-4412",
-  "price": 129.00,
-  "in_stock": true }`}
+                      {`{
+  "company": "Anthropic",
+  "update_type": "New Model Release",
+  "model": "Claude 3.5 Sonnet",
+  "context_window": "200K tokens",
+  "pricing_per_1m_input": "$3.00"
+}`}
                     </pre>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* Node Modals from node-modals.tsx */}
+            <TriggerModal open={activeModal === "trigger"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <GeoNetworkModal open={activeModal === "geo"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <ScraperStudioModal open={activeModal === "scraper"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <LLMExtractModal open={activeModal === "llm"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <FilterModal open={activeModal === "filter"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <MistralPredictionModal open={activeModal === "predict"} onOpenChange={(v) => !v && setActiveModal(null)} />
+            <WarehouseModal open={activeModal === "warehouse"} onOpenChange={(v) => !v && setActiveModal(null)} />
           </div>
         </Reveal>
       </div>

@@ -10,9 +10,11 @@ import {
   Play,
   ShieldCheck,
   Tag,
+  Search,
 } from "lucide-react";
 import { Logo } from "@/components/landing/primitives";
 import { cn } from "@/lib/utils";
+import { runIntelligencePipeline } from "@/lib/pipeline";
 
 type ModuleKey = "target" | "pricing" | "jobs" | "press" | "brain";
 
@@ -34,11 +36,18 @@ type NodeSpec = {
 };
 
 const NODES: NodeSpec[] = [
-  { key: "target", title: "Target URL", detail: "aureliagrand.com", icon: Globe, x: 4, y: 38 },
-  { key: "pricing", title: "Pricing Scraper", detail: "42 room types", icon: Tag, x: 36, y: 6 },
-  { key: "jobs", title: "Job Scraper", detail: "18 open roles", icon: Briefcase, x: 36, y: 38 },
-  { key: "press", title: "Press Scraper", detail: "6 releases", icon: Newspaper, x: 36, y: 70 },
-  { key: "brain", title: "Gemini AI Brain", detail: "Strategic synthesis", icon: Bot, x: 70, y: 38 },
+  { key: "target", title: "Target URL", detail: "Enter a URL below", icon: Globe, x: 4, y: 38 },
+  { key: "pricing", title: "Pricing Scraper", detail: "Public details", icon: Tag, x: 36, y: 6 },
+  { key: "jobs", title: "Job Scraper", detail: "Open roles", icon: Briefcase, x: 36, y: 38 },
+  { key: "press", title: "Press Scraper", detail: "Releases", icon: Newspaper, x: 36, y: 70 },
+  {
+    key: "brain",
+    title: "Gemini AI Brain",
+    detail: "Strategic synthesis",
+    icon: Bot,
+    x: 70,
+    y: 38,
+  },
 ];
 
 const EDGES = [
@@ -50,70 +59,82 @@ const EDGES = [
   { from: "press", to: "brain", d: "M 520 340 C 620 340, 620 200, 730 200" },
 ];
 
-const ALERTS = [
-  {
-    tone: "high" as const,
-    title: "Predicted shift to fine-dining model",
-    body: "5 culinary hires + 10.4% ADR lift at Aurelia Grand — restaurant relaunch likely before December.",
-    time: "just now",
-  },
-  {
-    tone: "mid" as const,
-    title: "Suite rate card withdrawn",
-    body: "Maison Lume removed public suite pricing — renovation or repricing window opening.",
-    time: "12m",
-  },
-  {
-    tone: "low" as const,
-    title: "Spa staffing steady",
-    body: "The Verano posted no wellness roles this quarter — no wellness expansion signal.",
-    time: "1h",
-  },
-];
+type AlertData = {
+  tone: "high" | "mid" | "low";
+  title: string;
+  body: string;
+  time: string;
+};
 
 export function IntelligenceCanvas() {
   const [running, setRunning] = useState(false);
   const [active, setActive] = useState<ModuleKey[]>([]);
-  const [visible, setVisible] = useState(0);
+  const [alerts, setAlerts] = useState<AlertData[]>([]);
+  const [targetUrl, setTargetUrl] = useState("https://lovable.dev");
+  const [errorMsg, setErrorMsg] = useState("");
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
-  const run = useCallback(() => {
+  const run = useCallback(async () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
     setRunning(true);
     setActive([]);
-    setVisible(0);
-    const order: ModuleKey[] = ["target", "pricing", "jobs", "press", "brain"];
+    setAlerts([]);
+    setErrorMsg("");
+
+    // Simulate node activation for the scrapers
+    const order: ModuleKey[] = ["target", "pricing", "jobs", "press"];
     order.forEach((k, i) => {
       timers.current.push(
         window.setTimeout(() => setActive((prev) => [...prev, k]), 350 + i * 500),
       );
     });
-    ALERTS.forEach((_, i) => {
-      timers.current.push(window.setTimeout(() => setVisible(i + 1), 2600 + i * 500));
-    });
-    timers.current.push(window.setTimeout(() => setRunning(false), 4400));
-  }, []);
+
+    try {
+      // Actually execute the backend pipeline
+      const result = await runIntelligencePipeline({ data: { url: targetUrl } });
+      
+      // Activate Brain node after receiving results
+      setActive((prev) => [...prev, "brain"]);
+
+      if (result.success && result.alerts) {
+        setAlerts(result.alerts);
+      } else {
+        setErrorMsg(result.error || "Failed to process target.");
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An unexpected error occurred.");
+    } finally {
+      setRunning(false);
+    }
+  }, [targetUrl]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-hairline px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <Logo />
-          <span className="hidden truncate rounded-full border border-hairline bg-surface px-2.5 py-1 text-[11.5px] font-medium text-ink-soft sm:inline">
-            aurelia-grand · competitive-intelligence
-          </span>
+          <div className="relative flex items-center max-w-sm ml-4">
+             <Search className="absolute left-3 size-4 text-muted-foreground" />
+             <input
+               type="url"
+               value={targetUrl}
+               onChange={(e) => setTargetUrl(e.target.value)}
+               className="h-8 w-[300px] rounded-full border border-hairline bg-surface pl-9 pr-3 text-[12px] font-medium text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+               placeholder="Enter target URL to scrape..."
+             />
+          </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <span className="hidden items-center gap-1.5 rounded-full border border-hairline bg-surface px-2.5 py-1.5 text-[11.5px] font-medium text-ink-soft sm:inline-flex">
-            <ShieldCheck className="size-3.5 text-brand" /> Public data only
+            <ShieldCheck className="size-3.5 text-brand" /> Live Extraction
           </span>
           <button
             type="button"
             onClick={run}
-            disabled={running}
+            disabled={running || !targetUrl}
             className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13.5px] font-semibold text-brand-foreground shadow-soft transition-transform hover:-translate-y-0.5 disabled:opacity-60"
           >
             <Play className="size-3.5" /> {running ? "Running…" : "Run pipeline"}
@@ -207,7 +228,7 @@ export function IntelligenceCanvas() {
                         {n.title}
                       </span>
                       <span className="block truncate text-[11px] text-muted-foreground">
-                        {n.detail}
+                        {n.key === "target" ? targetUrl : n.detail}
                       </span>
                     </span>
                   </div>
@@ -233,14 +254,20 @@ export function IntelligenceCanvas() {
             </p>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success-tint px-2.5 py-1 text-[11px] font-semibold text-success">
               <span className="size-1.5 animate-pulse rounded-full bg-success" />
-              Self-Healing Active
+              Connected
             </span>
           </div>
 
           <div className="mt-3 space-y-2.5">
-            {ALERTS.slice(0, visible).map((a) => (
+            {errorMsg && (
+              <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-3 shadow-soft">
+                <p className="text-[12.5px] font-semibold text-destructive">{errorMsg}</p>
+              </div>
+            )}
+            
+            {alerts.map((a, i) => (
               <article
-                key={a.title}
+                key={i}
                 className="animate-rise rounded-xl border border-hairline bg-card p-3 shadow-soft"
               >
                 <div className="flex items-center justify-between gap-2">
@@ -263,19 +290,24 @@ export function IntelligenceCanvas() {
               </article>
             ))}
 
-            {visible === 0 && (
+            {alerts.length === 0 && !errorMsg && !running && (
               <p className="rounded-xl border border-dashed border-hairline p-4 text-[12.5px] text-muted-foreground">
                 Run the pipeline to stream strategic insights here.
+              </p>
+            )}
+            {running && alerts.length === 0 && !errorMsg && (
+              <p className="rounded-xl border border-dashed border-hairline p-4 text-[12.5px] text-muted-foreground">
+                Fetching target, running extraction, and synthesizing...
               </p>
             )}
           </div>
 
           <div className="mt-5 space-y-2">
             <div className="flex items-center gap-2 rounded-xl border border-hairline bg-card px-2.5 py-2 text-[12.5px] text-ink">
-              <Activity className="size-3.5 shrink-0 text-brand" /> Proxy pool healthy · 0 blocks
+              <Activity className="size-3.5 shrink-0 text-brand" /> Execution Engine Connected
             </div>
             <div className="flex items-center gap-2 rounded-xl border border-hairline bg-card px-2.5 py-2 text-[12.5px] text-ink">
-              <ShieldCheck className="size-3.5 shrink-0 text-brand" /> robots.txt respected
+              <Bot className="size-3.5 shrink-0 text-brand" /> Gemini AI Brain Active
             </div>
           </div>
         </aside>

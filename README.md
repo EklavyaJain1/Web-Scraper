@@ -1,6 +1,6 @@
 # Gumloop Reimagined
 
-https://www.gumloop.com/  just recreate this website we want this website to make into an web app for our scraper project we want exactly the same but colour code white black and delicate blue , r3create evrry thing fromm small detials
+https://www.gumloop.com/ just recreate this website we want this website to make into an web app for our scraper project we want exactly the same but colour code white black and delicate blue , r3create evrry thing fromm small detials
 
 This project was built with [Lovable](https://lovable.dev).
 
