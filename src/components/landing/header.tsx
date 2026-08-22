@@ -5,8 +5,6 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { label: "Product", href: "#product" },
-  { label: "Workspace", href: "#console" },
-  { label: "Pricing", href: "#pricing" },
   { label: "Live Demo", href: "/dashboard" },
 ];
 
@@ -28,12 +26,12 @@ export function SiteNav() {
         scrolled ? "border-hairline bg-background/85 backdrop-blur-xl" : "border-transparent",
       )}
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 sm:px-8 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 sm:px-8 md:grid-cols-2">
         <a href="#top" aria-label="Web Miner home" className="min-w-0">
           <Logo />
         </a>
 
-        <nav className="hidden items-center justify-center gap-1 md:flex">
+        <nav className="hidden items-center justify-end gap-1 md:flex">
           {NAV.map((item) => (
             <a
               key={item.label}
@@ -44,21 +42,6 @@ export function SiteNav() {
             </a>
           ))}
         </nav>
-
-        <div className="hidden items-center justify-end gap-2 md:flex">
-          <a
-            href="#cta"
-            className="rounded-full px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-2"
-          >
-            Sign in
-          </a>
-          <a
-            href="#cta"
-            className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground shadow-soft transition-transform hover:-translate-y-0.5"
-          >
-            Get Started
-          </a>
-        </div>
 
         <button
           type="button"
@@ -83,13 +66,6 @@ export function SiteNav() {
                 {item.label}
               </a>
             ))}
-            <a
-              href="#cta"
-              onClick={() => setOpen(false)}
-              className="mt-3 rounded-full bg-brand px-4 py-2.5 text-center text-[15px] font-semibold text-brand-foreground"
-            >
-              Get Started
-            </a>
           </div>
         </div>
       )}

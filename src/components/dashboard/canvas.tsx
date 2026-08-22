@@ -16,12 +16,14 @@ import {
   CheckCircle2,
   X,
   Wrench,
+  ArrowLeft,
 } from "lucide-react";
 import { Logo } from "@/components/landing/primitives";
 import { cn } from "@/lib/utils";
 import { runIntelligencePipeline, runSelfHeal, approveHeal } from "@/lib/pipeline";
 import type { AlertData, ScraperModule } from "@/lib/pipeline";
 import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
 
 type ModuleKey = "target" | "scrape" | "brain";
 
@@ -179,6 +181,9 @@ export function IntelligenceCanvas() {
       {/* Header */}
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-hairline px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
+          <Link to="/" className="mr-2 rounded-md p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-ink">
+            <ArrowLeft className="size-4" />
+          </Link>
           <Logo />
           <div className="relative ml-4 flex max-w-sm items-center">
             <Search className="absolute left-3 size-4 text-muted-foreground" />

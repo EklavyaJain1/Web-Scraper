@@ -104,18 +104,18 @@ export function Pipeline() {
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal>
-            <Eyebrow>Visual builder</Eyebrow>
+            <Eyebrow>Core Capabilities</Eyebrow>
             <h2 className="mt-5 text-[34px] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-[46px]">
-              Self-Healing Scraper Pipeline.
+              Everything you need to scrape at scale.
             </h2>
             <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-ink-soft">
-              Scrape any public website with Bright Data, analyze content with Gemini AI, and watch the scraper automatically repair itself when the site changes its layout. The entire pipeline runs from your terminal.
+              Built for the Into the Scrape-Verse Hackathon. We combined Bright Data's world-class proxy infrastructure with Gemini's reasoning capabilities to create a robust, fault-tolerant scraping architecture.
             </p>
             <ul className="mt-7 space-y-3">
               {[
-                "Scrape public websites using Bright Data's Web Unlocker and proxy network.",
-                "Analyze content with Gemini AI to extract strategic insights automatically.",
-                "Self-heal broken selectors when websites change their HTML structure.",
+                "Bypass advanced anti-bot protections using Bright Data Web Unlocker.",
+                "Extract structured data from unstructured HTML using Gemini Flash 2.5.",
+                "Automatically detect layout changes and self-heal broken selectors via CLI.",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-3 text-[15px] text-ink">
                   <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand-tint text-brand">
