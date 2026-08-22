@@ -1,12 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize Gemini AI
-const geminiApiKey = process.env["GEMINI_API_KEY"];
-const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
-
-const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
-
 // Real collector ID from bdata scraper create
 const COLLECTOR_ID = "c_mt4f331h17e4wjcvxk";
 
@@ -48,6 +42,7 @@ export type AlertData = {
 // ---------------------------------------------------------------------------
 
 async function scrapeWithWebUnlocker(url: string): Promise<string> {
+  const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
@@ -142,6 +137,8 @@ export const runIntelligencePipeline = createServerFn({ method: "POST" })
       console.log(`[Pipeline] Content length: ${scrapedContent.length}`);
 
       // --- Module 2: Gemini AI Analysis ---
+      const geminiApiKey = process.env["GEMINI_API_KEY"];
+      const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
       if (!ai) {
         brainMod.status = "error";
         brainMod.error = "GEMINI_API_KEY not configured";
@@ -228,6 +225,7 @@ export const runSelfHeal = createServerFn({ method: "POST" })
   .validator((d: { collectorId: string; instruction: string }) => d)
   .handler(async ({ data }) => {
     try {
+      const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
       if (!BRIGHT_DATA_API_KEY) {
         return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
       }
@@ -264,6 +262,7 @@ export const approveHeal = createServerFn({ method: "POST" })
   .validator((d: { collectorId: string; approve: boolean }) => d)
   .handler(async ({ data }) => {
     try {
+      const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
       if (!BRIGHT_DATA_API_KEY) {
         return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
       }
