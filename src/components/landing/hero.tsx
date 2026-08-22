@@ -297,54 +297,15 @@ function WorkflowCanvas() {
   );
 }
 
+import { Hero as AnimatedHero } from "@/components/ui/animated-hero";
+
 export function Hero() {
   return (
     <div id="top" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[620px] dot-grid opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
       
-      {/* Removed glow-brand to reduce AI slop */}
-
       <Section className="relative pb-8 pt-14 md:pb-12 md:pt-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3.5 py-1.5 text-[12px] font-medium text-ink-soft shadow-soft">
-              <Sparkles className="size-3.5 text-brand" />
-              New — AI extraction agents
-            </span>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <h1 className="mt-6 text-balance-tight text-[42px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl md:text-[70px]">
-              Automate your scraping workflows with AI.
-            </h1>
-          </Reveal>
-
-          <Reveal delay={160}>
-            <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
-              Web Miner is a self-healing web scraper that automatically repairs broken selectors
-              when websites change their layout. Powered by Bright Data and Gemini AI.
-            </p>
-          </Reveal>
-
-          <Reveal delay={240}>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
-              >
-                Try the Demo <ArrowRight className="size-4" />
-              </a>
-              <a
-                href="https://github.com/EklavyaJain1/gumloop-reimagined"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card px-6 py-3 text-[15px] font-medium text-ink transition-colors hover:bg-surface-2"
-              >
-                View Source
-              </a>
-            </div>
-          </Reveal>
-        </div>
+        <AnimatedHero />
 
         <Reveal delay={320}>
           <WorkflowCanvas />
