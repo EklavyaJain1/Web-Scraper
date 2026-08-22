@@ -1,0 +1,1 @@
+{"collector_id":"c_mt4buklh24bcxhyzu0","status":"heal_trigger_failed","completed_steps":[],"prompt":"The story title selector changed from .titleline to .story-title","view_url":"https://brightdata.com/cp/scrapers/c_mt4buklh24bcxhyzu0","next_step":"bdata scraper run c_mt4buklh24bcxhyzu0 <url>","error":"Another refactor job is still in progress"}
