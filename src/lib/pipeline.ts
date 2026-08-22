@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { GoogleGenAI } from "@google/genai";
-import { execSync } from "child_process";
 
 // Initialize Gemini AI
 const geminiApiKey = process.env["GEMINI_API_KEY"];
@@ -10,6 +9,10 @@ const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
 
 // Real collector ID from bdata scraper create
 const COLLECTOR_ID = "c_mt4f331h17e4wjcvxk";
+
+// Bright Data API endpoints
+const BRIGHT_DATA_SCRAPE_API = "https://api.brightdata.com/webscraper";
+const BRIGHT_DATA_UNLOCKER_API = "https://api.brightdata.com/request";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -41,24 +44,34 @@ export type AlertData = {
 };
 
 // ---------------------------------------------------------------------------
-// Fast scrape — uses Bright Data Web Unlocker (10-20s, not batch)
+// Fast scrape — uses Bright Data Web Unlocker API directly
 // ---------------------------------------------------------------------------
 
 async function scrapeWithWebUnlocker(url: string): Promise<string> {
-  const apiKeyFlag = BRIGHT_DATA_API_KEY
-    ? `--api-key "${BRIGHT_DATA_API_KEY}"`
-    : "";
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
+  };
 
-  const cmd = `npx -p @brightdata/cli bdata scrape "${url}" --format markdown ${apiKeyFlag}`;
+  const body = {
+    url,
+    format: "markdown",
+    zone: "unblocker",
+  };
 
   try {
-    const output = execSync(cmd, {
-      encoding: "utf-8",
-      timeout: 60_000,
-      maxBuffer: 5 * 1024 * 1024,
-      stdio: ["pipe", "pipe", "pipe"],
+    const response = await fetch(BRIGHT_DATA_UNLOCKER_API, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
     });
-    return output.trim();
+
+    if (!response.ok) {
+      throw new Error(`Bright Data API error: ${response.status} ${response.statusText}`);
+    }
+
+    const text = await response.text();
+    return text.trim();
   } catch (err: any) {
     console.warn("Web Unlocker failed, falling back to direct fetch:", err.message);
     return fallbackFetch(url);
@@ -208,25 +221,35 @@ ${scrapedContent.substring(0, 12_000)}`;
   });
 
 // ---------------------------------------------------------------------------
-// Self-healing server function — triggers bdata scraper heal
+// Self-healing server function — triggers Bright Data scraper heal via API
 // ---------------------------------------------------------------------------
 
 export const runSelfHeal = createServerFn({ method: "POST" })
   .validator((d: { collectorId: string; instruction: string }) => d)
   .handler(async ({ data }) => {
     try {
-      const apiKeyFlag = BRIGHT_DATA_API_KEY
-        ? `--api-key "${BRIGHT_DATA_API_KEY}"`
-        : "";
+      if (!BRIGHT_DATA_API_KEY) {
+        return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
+      }
 
-      const cmd = `npx -p @brightdata/cli bdata scraper heal "${data.collectorId}" "${data.instruction}" ${apiKeyFlag}`;
-
-      const output = execSync(cmd, {
-        encoding: "utf-8",
-        timeout: 180_000,
-        stdio: ["pipe", "pipe", "pipe"],
+      const response = await fetch(`${BRIGHT_DATA_SCRAPE_API}/heal`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
+        },
+        body: JSON.stringify({
+          collector_id: data.collectorId,
+          instruction: data.instruction,
+        }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        return { success: false, error: `API error: ${response.status} - ${errorText}` };
+      }
+
+      const output = await response.text();
       return { success: true, output };
     } catch (error: any) {
       return { success: false, error: error.message };
@@ -234,26 +257,35 @@ export const runSelfHeal = createServerFn({ method: "POST" })
   });
 
 // ---------------------------------------------------------------------------
-// Approve/Reject heal
+// Approve/Reject heal via API
 // ---------------------------------------------------------------------------
 
 export const approveHeal = createServerFn({ method: "POST" })
   .validator((d: { collectorId: string; approve: boolean }) => d)
   .handler(async ({ data }) => {
     try {
-      const apiKeyFlag = BRIGHT_DATA_API_KEY
-        ? `--api-key "${BRIGHT_DATA_API_KEY}"`
-        : "";
+      if (!BRIGHT_DATA_API_KEY) {
+        return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
+      }
 
-      const rejectFlag = data.approve ? "" : "--reject";
-      const cmd = `npx -p @brightdata/cli bdata scraper approve "${data.collectorId}" ${rejectFlag} ${apiKeyFlag}`;
-
-      const output = execSync(cmd, {
-        encoding: "utf-8",
-        timeout: 60_000,
-        stdio: ["pipe", "pipe", "pipe"],
+      const response = await fetch(`${BRIGHT_DATA_SCRAPE_API}/approve`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
+        },
+        body: JSON.stringify({
+          collector_id: data.collectorId,
+          approve: data.approve,
+        }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        return { success: false, error: `API error: ${response.status} - ${errorText}` };
+      }
+
+      const output = await response.text();
       return { success: true, output };
     } catch (error: any) {
       return { success: false, error: error.message };

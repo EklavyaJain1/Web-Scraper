@@ -45,3 +45,4 @@ dist-ssr
 # Hackathon evidence (generated artifacts)
 # We want to commit the evidence folder so judges can review it
 !evidence/
+.vercel
