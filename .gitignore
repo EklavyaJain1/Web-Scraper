@@ -43,4 +43,5 @@ dist-ssr
 .freebuff/
 
 # Hackathon evidence (generated artifacts)
-evidence/
+# We want to commit the evidence folder so judges can review it
+!evidence/
