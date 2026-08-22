@@ -27,6 +27,10 @@ Web Miner is a self-healing web scraper that automatically repairs broken CSS se
 4. **Self-Heal** — `bdata scraper heal` automatically repairs broken selectors when sites change
 5. **Approve** — `bdata scraper approve` lets you accept or reject the AI-generated fix
 
+### Self-Heal Demo
+
+*(TODO: Add link/embed of your `heal-event` screen recording here before submitting!)*
+
 ## Tech Stack
 
 - **Bright Data CLI** (`bdata`) — Scraper creation, execution, and self-healing
@@ -61,9 +65,9 @@ cp .env.example .env
 Edit `.env` and add your API keys:
 
 ```env
-# Required: Bright Data API token
+# Required: Bright Data API key
 # Get from: https://brightdata.com/account/api
-BRIGHT_DATA_API_TOKEN=your_token_here
+BRIGHT_DATA_API_KEY=your_key_here
 
 # Required: Google Gemini AI key
 # Get from: https://aistudio.google.com/apikey
@@ -97,20 +101,20 @@ npx -p @brightdata/cli bdata scraper create "https://example.com" "Extract produ
 ### Run the scraper
 
 ```bash
-npx -p @brightdata/cli bdata scraper run <collector_id> --pretty
+npx -p @brightdata/cli bdata scraper run c_mt4f331h17e4wjcvxk --pretty
 ```
 
 ### Self-heal broken selectors
 
 ```bash
 # When a website changes its layout:
-npx -p @brightdata/cli bdata scraper heal <collector_id> "The pricing page moved from /pricing to /plans"
+npx -p @brightdata/cli bdata scraper heal c_mt4f331h17e4wjcvxk "The HTML structure for the book prices has changed. Extract the price text directly from the new span class."
 
 # Approve the fix:
-npx -p @brightdata/cli bdata scraper approve <collector_id>
+npx -p @brightdata/cli bdata scraper approve c_mt4f331h17e4wjcvxk
 
 # Or reject:
-npx -p @brightdata/cli bdata scraper approve <collector_id> --reject
+npx -p @brightdata/cli bdata scraper approve c_mt4f331h17e4wjcvxk --reject
 ```
 
 ## Dashboard
