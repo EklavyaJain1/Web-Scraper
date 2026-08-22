@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { TriggerModal, ScraperStudioModal, SelfHealingModal, MCPOutputModal, LLMExtractModal } from "./node-modals";
 
-const LOGOS = ["Northwind", "Instabasket", "Gustify", "Samsara", "Rippling", "Webflow"];
-
 function CanvasNode({
   icon: Icon,
   title,
@@ -17,7 +15,8 @@ function CanvasNode({
   icon: typeof Globe;
   title: string;
   subtitle: string;
-  style?: React.CSSProperties;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  style?: any;
   className?: string;
   onClick?: () => void;
 }) {
@@ -97,7 +96,7 @@ function TerminalStream() {
     let i = 0;
     const interval = setInterval(() => {
       if (i < messages.length) {
-        const msg = messages[i];
+        const msg = messages[i] ?? "";
         i++;
         setLogs((prev) => [...prev.slice(-3), msg]);
       } else {
@@ -322,24 +321,26 @@ export function Hero() {
 
           <Reveal delay={160}>
             <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
-              Web Miner turns any website into clean, structured data. Build extraction pipelines on
-              a visual canvas, run them at scale, and deliver results wherever your team works.
+              Web Miner is a self-healing web scraper that automatically repairs broken selectors
+              when websites change their layout. Powered by Bright Data and Gemini AI.
             </p>
           </Reveal>
 
           <Reveal delay={240}>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <a
-                href="#cta"
+                href="/dashboard"
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
               >
-                Start Building Free <ArrowRight className="size-4" />
+                Try the Demo <ArrowRight className="size-4" />
               </a>
               <a
-                href="#product"
+                href="https://github.com/EklavyaJain1/gumloop-reimagined"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card px-6 py-3 text-[15px] font-medium text-ink transition-colors hover:bg-surface-2"
               >
-                Book a Demo
+                View Source
               </a>
             </div>
           </Reveal>
@@ -353,11 +354,11 @@ export function Hero() {
       <Section className="py-12 md:py-16">
         <Reveal>
           <h2 className="text-center text-[12.5px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            Trusted by engineering teams at
+            Powered by
           </h2>
           <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
             <div className="flex w-max animate-marquee items-center gap-14">
-              {[...LOGOS, ...LOGOS].map((logo, i) => (
+              {["Bright Data", "Gemini AI", "TanStack", "React 19", "Tailwind CSS", "shadcn/ui", "Bright Data", "Gemini AI", "TanStack", "React 19", "Tailwind CSS", "shadcn/ui"].map((logo, i) => (
                 <span
                   key={`${logo}-${i}`}
                   className="whitespace-nowrap font-display text-xl font-bold tracking-tight text-ink/25"

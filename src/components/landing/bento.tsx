@@ -4,33 +4,33 @@ import { Eyebrow, Reveal, Section } from "./primitives";
 const CARDS = [
   {
     icon: Shield,
-    title: "Bypass Anti-Bots",
-    body: "Residential proxy rotation, stealth browsers and CAPTCHA handling built in — no vendor juggling.",
+    title: "Self-Healing Selectors",
+    body: "When a website changes its HTML, Bright Data AI automatically repairs broken CSS selectors.",
   },
   {
     icon: Clock,
-    title: "Scheduled Runs",
-    body: "Cron-style schedules with retries, backoff and per-run alerting when a site changes shape.",
+    title: "Bright Data CLI",
+    body: "Entire workflow runs from the terminal — bdata scraper create, run, heal, approve.",
   },
   {
     icon: Braces,
-    title: "Structured JSON",
-    body: "Define a schema once; every run is validated, typed and safe for downstream models.",
+    title: "AI Analysis",
+    body: "Gemini AI processes scraped content and extracts strategic insights, not just raw data.",
   },
   {
     icon: Zap,
     title: "Zero Maintenance",
-    body: "AI selectors self-heal after redesigns, so your pipelines keep running while you sleep.",
+    body: "Scrapers adapt to website redesigns automatically — no manual selector updates needed.",
   },
   {
     icon: Boxes,
-    title: "60+ Destinations",
-    body: "Push clean rows to Sheets, Postgres, S3, Snowflake, Slack or any webhook.",
+    title: "Live Dashboard",
+    body: "Visual pipeline with real-time status, alerts, and raw scrape preview.",
   },
   {
     icon: LineChart,
-    title: "Run Observability",
-    body: "Per-node timings, diffs and failure traces for every execution in your workspace.",
+    title: "Open Source",
+    body: "Fully open source hackathon submission — clone, configure, and run in minutes.",
   },
 ];
 

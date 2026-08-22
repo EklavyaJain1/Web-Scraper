@@ -9,37 +9,32 @@ export function CobeGlobe() {
     
     if (!canvasRef.current) return;
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
       width: 640,
       height: 640,
       phi: 0,
       theta: 0.3,
-      dark: 0, // Light theme
+      dark: 0,
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.94, 0.95, 0.97], // Light surface color
-      markerColor: [0.0, 0.4, 1.0], // Brand blue markers
-      glowColor: [1.0, 1.0, 1.0], // White glow to blend with bg
+      baseColor: [0.94, 0.95, 0.97],
+      markerColor: [0.0, 0.4, 1.0],
+      glowColor: [1.0, 1.0, 1.0],
       markers: [
-        // US
         { location: [37.7595, -122.4367], size: 0.08 },
-        // UK
         { location: [51.5072, 0.1276], size: 0.07 },
-        // India
         { location: [20.5937, 78.9629], size: 0.09 },
-        // Japan
         { location: [35.6762, 139.6503], size: 0.07 },
-        // Germany
         { location: [51.1657, 10.4515], size: 0.07 }
       ],
-      onRender: (state) => {
-        // Revolves around its axis slowly
+      onRender: (state: { phi: number }) => {
         state.phi = phi;
         phi += 0.005;
       },
-    });
+    } as any);
 
     return () => {
       globe.destroy();

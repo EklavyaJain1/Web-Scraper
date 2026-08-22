@@ -16,6 +16,11 @@ dist-ssr
 .nitro
 *.local
 
+# Environment variables (NEVER commit secrets)
+.env
+.env.*
+!.env.example
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
@@ -30,3 +35,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# AI coding agent directories (may contain API keys)
+.cursor/
+.kilo/
+.playwright-mcp/
+.freebuff/
+
+# Hackathon evidence (generated artifacts)
+evidence/

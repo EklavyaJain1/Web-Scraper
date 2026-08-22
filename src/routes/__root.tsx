@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Web Miner" },
-      { name: "description", content: "The web data platform for structured, reliable scraping." },
+      { name: "description", content: "Self-healing web scraper powered by Bright Data and AI." },
       { property: "og:site_name", content: "Web Miner" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -17,13 +17,13 @@ function CostCard() {
         ),
       )}
       <div className="relative text-center">
-        <p className="text-[12.5px] text-muted-foreground">Research hours per competitor</p>
+        <p className="text-[12.5px] text-muted-foreground">Selector repair time</p>
         <p className="mt-1 font-display text-5xl font-extrabold tracking-tight text-ink">
-          −86<span className="text-2xl">%</span>
+          Auto<span className="text-2xl">.</span>
         </p>
         <p className="mt-1 text-[13px] text-ink-soft">
-          <span className="line-through">14 hrs</span>{" "}
-          <span className="font-semibold text-brand">2 hrs</span>
+          <span className="line-through">Manual fix</span>{" "}
+          <span className="font-semibold text-brand">AI heal</span>
         </p>
       </div>
     </div>
@@ -94,18 +94,18 @@ function AlertCard() {
 const CARDS = [
   {
     render: CostCard,
-    title: "Public sources only",
-    body: "We read the pages anyone can read — pricing, careers, press — never gated or personal data.",
+    title: "Self-healing selectors",
+    body: "When a website changes its layout, Bright Data's AI automatically repairs broken CSS selectors.",
   },
   {
     render: LoopCard,
-    title: "A brain, not a table",
-    body: "Gemini reads every signal together and returns a prediction with the evidence behind it.",
+    title: "AI-powered analysis",
+    body: "Gemini reads scraped content and extracts strategic insights, not just raw data.",
   },
   {
     render: AlertCard,
-    title: "Alerts that matter",
-    body: "Silent changes on a competitor's site surface as strategic moves, not raw diffs.",
+    title: "Terminal-first workflow",
+    body: "The entire pipeline runs from the CLI — bdata scraper create, run, heal, approve.",
   },
 ];
 
@@ -134,8 +134,8 @@ export function Insights() {
 
       <Reveal delay={200}>
         <div className="mt-8 flex items-center gap-2 text-[13px] text-muted-foreground">
-          <RefreshCw className="size-3.5 text-brand" /> Pipelines re-run daily and self-heal when a
-          competitor redesigns.
+          <RefreshCw className="size-3.5 text-brand" /> Scrapers self-heal when websites change their
+          layout — no manual intervention needed.
         </div>
       </Reveal>
     </Section>

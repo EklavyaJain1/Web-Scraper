@@ -9,60 +9,69 @@ import { Eyebrow, Logo, Reveal, Section } from "./primitives";
 
 const PLANS = [
   {
-    name: "Free",
+    name: "Open Source",
     price: "$0",
     cadence: "forever",
-    blurb: "For trying scrapers on real pages.",
-    features: ["1,000 page credits", "3 scheduled flows", "CSV & JSON export", "Community support"],
-    cta: "Start free",
-    featured: false,
-  },
-  {
-    name: "Pro",
-    price: "$99",
-    cadence: "per month",
-    blurb: "For teams running production pipelines.",
+    blurb: "Full self-healing scraper, fully open source.",
     features: [
-      "250,000 page credits",
-      "Unlimited flows & schedules",
-      "Proxy rotation + anti-bot",
-      "Warehouse & webhook delivery",
-      "Schema drift alerts",
+      "Bright Data Scraper Studio integration",
+      "AI-powered self-healing selectors",
+      "Gemini AI analysis pipeline",
+      "Dashboard with live alerts",
     ],
-    cta: "Start 14-day trial",
+    cta: "Clone & Run",
     featured: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "annual",
-    blurb: "For compliance-heavy, high-volume work.",
-    features: ["Volume credits", "SSO & audit logs", "Private networking", "Dedicated support"],
-    cta: "Talk to sales",
+    name: "Built with",
+    price: "",
+    cadence: "",
+    blurb: "The technologies powering Web Miner.",
+    features: [
+      "Bright Data CLI & Scraper Studio",
+      "Google Gemini AI (gemini-2.5-flash)",
+      "TanStack Start + React 19",
+      "Tailwind CSS v4 + shadcn/ui",
+    ],
+    cta: "View Source",
+    featured: false,
+  },
+  {
+    name: "Hackathon",
+    price: "",
+    cadence: "",
+    blurb: "Built for Into the Scrape-Verse 2026.",
+    features: [
+      "Self-healing is the core theme",
+      "Terminal-first workflow",
+      "Open source submission",
+      "Reproducible by judges",
+    ],
+    cta: "See Evidence",
     featured: false,
   },
 ];
 
 const FAQS = [
   {
-    q: "Do I need to write code to build a scraper?",
-    a: "No. You point at the page, select the fields you want, and Web Miner generates the extraction schema. Code is optional — you can drop into JavaScript or Python steps whenever you need custom logic.",
+    q: "What is Web Miner?",
+    a: "Web Miner is a self-healing web scraper built for the Into the Scrape-Verse hackathon. It uses Bright Data's Scraper Studio to extract data from websites, and Gemini AI to analyze the results.",
   },
   {
-    q: "How does Web Miner handle blocking and CAPTCHAs?",
-    a: "Every run goes through rotating residential and datacenter proxies with realistic browser fingerprints. CAPTCHA solving, retries and backoff are automatic, and blocked pages are reported per run.",
+    q: "How does self-healing work?",
+    a: "When a target website changes its HTML structure, Bright Data's scraper detects broken selectors and uses AI to automatically repair them. You approve or reject the fix via the bdata CLI.",
   },
   {
-    q: "What happens when a website changes its layout?",
-    a: "Runs are validated against your schema. When a field disappears or changes shape, you get a drift alert with a diff of the affected selectors before the bad data reaches downstream systems.",
+    q: "What technologies power this?",
+    a: "Bright Data CLI and Scraper Studio for scraping, Google Gemini AI (gemini-2.5-flash) for analysis, TanStack Start + React for the frontend, and Tailwind CSS + shadcn/ui for the design system.",
   },
   {
-    q: "Where can I send the data?",
-    a: "Postgres, BigQuery, Snowflake, S3, Google Sheets, Airtable, Slack, or any HTTP endpoint. There is also a REST API and signed webhooks for each completed run.",
+    q: "How do I run this myself?",
+    a: "Clone the repo, run npm install, set up your .env file with API keys (see .env.example), authenticate with Bright Data via bdata login, then run npm run dev.",
   },
   {
-    q: "Is scraping with Web Miner compliant?",
-    a: "Web Miner respects robots directives and rate limits by default, pins processing to the region you choose, and gives you retention controls. You remain responsible for the sources you target.",
+    q: "Is this a real product?",
+    a: "This is a hackathon submission for Into the Scrape-Verse (WeMakeDevs + Bright Data). The frontend is a demo dashboard showcasing the self-healing scraper pipeline.",
   },
 ];
 
@@ -172,23 +181,25 @@ export function FinalCta() {
           <div className="pointer-events-none absolute inset-0 grid-faint opacity-40" />
           <div className="relative">
             <h2 className="mx-auto max-w-2xl text-[34px] font-semibold leading-[1.08] text-ink sm:text-[48px]">
-              Turn the web into your data warehouse
+              See it in action
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-[16px] text-ink-soft">
-              Start free with 1,000 page credits. Build your first scraper in under ten minutes.
+              Run the self-healing scraper pipeline and watch it adapt to website changes in real-time.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <a
-                href="#top"
+                href="/dashboard"
                 className="inline-flex items-center gap-2 rounded-full gradient-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
               >
-                Get started free <ArrowRight className="size-4" />
+                Try the Demo <ArrowRight className="size-4" />
               </a>
               <a
-                href="#pricing"
+                href="https://github.com/EklavyaJain1/gumloop-reimagined"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-6 py-3 text-[15px] font-medium text-ink hover:bg-surface-2"
               >
-                Book a demo
+                View Source
               </a>
             </div>
           </div>
@@ -199,10 +210,10 @@ export function FinalCta() {
 }
 
 const FOOTER = [
-  { title: "Product", links: ["Flow builder", "Proxies", "Scheduling", "Integrations", "Pricing"] },
-  { title: "Use cases", links: ["E-commerce", "Real estate", "News", "Social", "Lead data"] },
-  { title: "Resources", links: ["Docs", "API reference", "Changelog", "Blog", "Status"] },
-  { title: "Company", links: ["About", "Careers", "Customers", "Security", "Contact"] },
+  { title: "Hackathon", links: ["Into the Scrape-Verse", "WeMakeDevs", "Bright Data", "Prizes", "Rules"] },
+  { title: "Tech Stack", links: ["Bright Data CLI", "Scraper Studio", "Gemini AI", "TanStack Start", "shadcn/ui"] },
+  { title: "Resources", links: ["README", "Setup Guide", "Evidence", "Source Code", "License"] },
+  { title: "Links", links: ["GitHub Repo", "Demo Video", "Build Log", "Contact"] },
 ];
 
 export function SiteFooter() {
@@ -213,8 +224,8 @@ export function SiteFooter() {
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-ink-soft">
-              The web data platform for teams who need structured, reliable and monitored scraping
-              at scale.
+              A self-healing web scraper built for the Into the Scrape-Verse hackathon.
+              Powered by Bright Data and Gemini AI.
             </p>
           </div>
           {FOOTER.map((col) => (
@@ -236,7 +247,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-hairline pt-6 text-[13px] text-muted-foreground sm:flex-row">
-          <span>© {new Date().getFullYear()} Web Miner, Inc. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Web Miner — Hackathon Project</span>
           <div className="flex gap-5">
             <a href="#top" className="hover:text-ink">
               Privacy

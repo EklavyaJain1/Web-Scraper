@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { IntelligenceCanvas } from "@/components/dashboard/canvas";
 
-const TITLE = "Intelligence Canvas — Web Miner CI Workspace";
+const TITLE = "Dashboard — Web Miner Scraper Pipeline";
 const DESCRIPTION =
-  "Build a node-based competitive intelligence pipeline: target URL, public pricing, careers and press scrapers feeding a Gemini brain that predicts a competitor's next move.";
+  "Run self-healing web scrapers with Bright Data and analyze results with Gemini AI. View strategic alerts from your scraped data.";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({

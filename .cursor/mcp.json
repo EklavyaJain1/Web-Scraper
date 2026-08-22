@@ -6,7 +6,7 @@
                 "@brightdata/mcp"
             ],
             "env": {
-                "API_TOKEN": "ef8a9890-a8b8-45ee-a767-ab693a9563c7"
+                "API_TOKEN": "YOUR_BRIGHT_DATA_API_TOKEN_HERE"
             }
         }
     }

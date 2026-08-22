@@ -1,80 +1,261 @@
 import { createServerFn } from "@tanstack/react-start";
 import { GoogleGenAI } from "@google/genai";
+import { execSync } from "child_process";
+
+// Initialize Gemini AI
+const geminiApiKey = process.env["GEMINI_API_KEY"];
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+
+const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
+
+// Real collector ID from bdata scraper create
+const COLLECTOR_ID = "c_mt4f331h17e4wjcvxk";
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export type ScraperModule = {
+  key: string;
+  label: string;
+  status: "idle" | "running" | "done" | "error";
+  output?: string;
+  error?: string;
+};
+
+export type PipelineResult = {
+  success: boolean;
+  alerts?: AlertData[];
+  rawScrape?: string;
+  structuredData?: string;
+  error?: string;
+  collectorId?: string;
+  modules?: ScraperModule[];
+};
+
+export type AlertData = {
+  tone: "high" | "mid" | "low";
+  title: string;
+  body: string;
+  time: string;
+};
+
+// ---------------------------------------------------------------------------
+// Fast scrape — uses Bright Data Web Unlocker (10-20s, not batch)
+// ---------------------------------------------------------------------------
+
+async function scrapeWithWebUnlocker(url: string): Promise<string> {
+  const apiKeyFlag = BRIGHT_DATA_API_KEY
+    ? `--api-key "${BRIGHT_DATA_API_KEY}"`
+    : "";
+
+  const cmd = `npx -p @brightdata/cli bdata scrape "${url}" --format markdown ${apiKeyFlag}`;
+
+  try {
+    const output = execSync(cmd, {
+      encoding: "utf-8",
+      timeout: 60_000,
+      maxBuffer: 5 * 1024 * 1024,
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    return output.trim();
+  } catch (err: any) {
+    console.warn("Web Unlocker failed, falling back to direct fetch:", err.message);
+    return fallbackFetch(url);
+  }
+}
+
+async function fallbackFetch(url: string): Promise<string> {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch URL: ${response.statusText}`);
+  }
+
+  return response.text();
+}
+
+// ---------------------------------------------------------------------------
+// Text extraction from HTML (used for fallback path)
+// ---------------------------------------------------------------------------
+
 import * as cheerio from "cheerio";
 
-// Initialize Gemini AI (Ensure GEMINI_API_KEY is set in your environment)
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+function extractTextFromHtml(html: string): string {
+  const $ = cheerio.load(html);
+  $("script, style, noscript, iframe, img, svg, video").remove();
+  let text = $("body").text();
+  text = text.replace(/\s+/g, " ").trim();
+  return text.substring(0, 15_000);
+}
+
+// ---------------------------------------------------------------------------
+// Main pipeline server function
+// ---------------------------------------------------------------------------
 
 export const runIntelligencePipeline = createServerFn({ method: "POST" })
   .validator((d: { url: string }) => d)
-  .handler(async ({ data }) => {
+  .handler(async ({ data }): Promise<PipelineResult> => {
+    const targetMod: ScraperModule = { key: "target", label: "Target URL", status: "running" };
+    const scrapeMod: ScraperModule = { key: "scrape", label: "Bright Data Scrape", status: "idle" };
+    const brainMod: ScraperModule = { key: "brain", label: "Gemini AI Brain", status: "idle" };
+    const modules: ScraperModule[] = [targetMod, scrapeMod, brainMod];
+
     try {
-      console.log(`Pipeline Started for URL: ${data.url}`);
-      
-      // 1. Fetch Target URL
-      const response = await fetch(data.url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch URL: ${response.statusText}`);
+      console.log(`[Pipeline] Starting for URL: ${data.url}`);
+
+      // --- Module 1: Scrape the target (fast Web Unlocker) ---
+      targetMod.status = "done";
+      scrapeMod.status = "running";
+
+      let scrapedContent: string;
+
+      try {
+        scrapedContent = await scrapeWithWebUnlocker(data.url);
+      } catch (scrapeErr: any) {
+        console.warn("[Pipeline] Fallback chain:", scrapeErr.message);
+        scrapedContent = await fallbackFetch(data.url);
+        scrapedContent = extractTextFromHtml(scrapedContent);
       }
-      
-      const html = await response.text();
-      console.log("HTML fetched successfully, extracting text...");
 
-      // 2. Extract Text using Cheerio
-      const $ = cheerio.load(html);
-      
-      // Remove scripts, styles, etc.
-      $('script, style, noscript, iframe, img, svg, video').remove();
-      
-      let textContent = $('body').text();
-      textContent = textContent.replace(/\s+/g, ' ').trim();
-      
-      // Limit text to avoid token limits (e.g., first 12,000 chars)
-      const limitedText = textContent.substring(0, 12000);
-      console.log(`Extracted text of length: ${limitedText.length}`);
+      scrapeMod.status = "done";
+      scrapeMod.output = scrapedContent.substring(0, 500) + "...";
 
-      // 3. Gemini AI Brain
-      const prompt = `
-You are a competitive intelligence AI. Analyze the following text extracted from a company website: ${data.url}.
-Extract exactly 3 strategic alerts based on the content (e.g. pricing changes, new jobs, press announcements, product features, or general strategic insights).
+      console.log(`[Pipeline] Content length: ${scrapedContent.length}`);
 
-Format your response strictly as a JSON array of objects. Do not include markdown blocks like \`\`\`json.
+      // --- Module 2: Gemini AI Analysis ---
+      if (!ai) {
+        brainMod.status = "error";
+        brainMod.error = "GEMINI_API_KEY not configured";
+        return {
+          success: false,
+          error:
+            "Gemini API key not configured. Set GEMINI_API_KEY in your .env file.",
+          rawScrape: scrapedContent.substring(0, 2000),
+          collectorId: COLLECTOR_ID,
+          modules,
+        };
+      }
+
+      brainMod.status = "running";
+
+      const prompt = `You are a competitive intelligence AI analyzing data scraped from: ${data.url}
+
+The data was collected using Bright Data Web Unlocker (collector: ${COLLECTOR_ID}).
+
+Extract exactly 3 strategic alerts based on the content (e.g. pricing changes, new features, product launches, hiring signals, or strategic insights).
+
+Format your response strictly as a JSON array of objects. Do NOT include markdown code blocks.
 Each object must have:
 - "tone": strictly one of "high", "mid", or "low"
 - "title": a short headline (max 8 words)
 - "body": a concise 1-sentence description of the insight
 - "time": "just now"
 
-Text Content:
-${limitedText}
-`;
+Scraped Content:
+${scrapedContent.substring(0, 12_000)}`;
 
-      console.log("Calling Gemini AI...");
       const aiResponse = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: "gemini-2.5-flash",
         contents: prompt,
       });
 
       const responseText = aiResponse.text || "";
-      // Strip markdown code block if present
-      const jsonString = responseText.replace(/```json/i, '').replace(/```/g, '').trim();
-      
-      try {
-        const alerts = JSON.parse(jsonString);
-        console.log("Pipeline executed successfully!");
-        return { success: true, alerts };
-      } catch (parseError) {
-        console.error("Failed to parse AI response:", jsonString);
-        return { success: false, error: "Failed to parse AI insights.", rawAIOutput: jsonString };
-      }
+      const jsonString = responseText
+        .replace(/```json/i, "")
+        .replace(/```/g, "")
+        .trim();
 
+      try {
+        const alerts: AlertData[] = JSON.parse(jsonString);
+        brainMod.status = "done";
+
+        console.log("[Pipeline] Success! Generated", alerts.length, "alerts");
+
+        return {
+          success: true,
+          alerts,
+          rawScrape: scrapedContent.substring(0, 2000),
+          collectorId: COLLECTOR_ID,
+          modules,
+        };
+      } catch (parseError) {
+        console.error("[Pipeline] Failed to parse AI response:", jsonString);
+        brainMod.status = "error";
+        brainMod.error = "Failed to parse AI response";
+        return {
+          success: false,
+          error: "Failed to parse AI response into structured alerts.",
+          rawScrape: jsonString,
+          collectorId: COLLECTOR_ID,
+          modules,
+        };
+      }
     } catch (error: any) {
-      console.error("Pipeline Error:", error);
-      return { success: false, error: error.message || "An unknown error occurred" };
+      console.error("[Pipeline] Error:", error);
+      return {
+        success: false,
+        error: error.message || "An unknown error occurred",
+        collectorId: COLLECTOR_ID,
+        modules,
+      };
+    }
+  });
+
+// ---------------------------------------------------------------------------
+// Self-healing server function — triggers bdata scraper heal
+// ---------------------------------------------------------------------------
+
+export const runSelfHeal = createServerFn({ method: "POST" })
+  .validator((d: { collectorId: string; instruction: string }) => d)
+  .handler(async ({ data }) => {
+    try {
+      const apiKeyFlag = BRIGHT_DATA_API_KEY
+        ? `--api-key "${BRIGHT_DATA_API_KEY}"`
+        : "";
+
+      const cmd = `npx -p @brightdata/cli bdata scraper heal "${data.collectorId}" "${data.instruction}" ${apiKeyFlag}`;
+
+      const output = execSync(cmd, {
+        encoding: "utf-8",
+        timeout: 180_000,
+        stdio: ["pipe", "pipe", "pipe"],
+      });
+
+      return { success: true, output };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  });
+
+// ---------------------------------------------------------------------------
+// Approve/Reject heal
+// ---------------------------------------------------------------------------
+
+export const approveHeal = createServerFn({ method: "POST" })
+  .validator((d: { collectorId: string; approve: boolean }) => d)
+  .handler(async ({ data }) => {
+    try {
+      const apiKeyFlag = BRIGHT_DATA_API_KEY
+        ? `--api-key "${BRIGHT_DATA_API_KEY}"`
+        : "";
+
+      const rejectFlag = data.approve ? "" : "--reject";
+      const cmd = `npx -p @brightdata/cli bdata scraper approve "${data.collectorId}" ${rejectFlag} ${apiKeyFlag}`;
+
+      const output = execSync(cmd, {
+        encoding: "utf-8",
+        timeout: 60_000,
+        stdio: ["pipe", "pipe", "pipe"],
+      });
+
+      return { success: true, output };
+    } catch (error: any) {
+      return { success: false, error: error.message };
     }
   });

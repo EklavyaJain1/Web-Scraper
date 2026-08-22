@@ -1,18 +1,17 @@
 import {
   Bot,
-  Braces,
   Check,
   Database,
   Filter,
   Globe,
   MousePointer2,
-  Play,
-  Repeat,
-  Server,
   Timer,
   BrainCircuit,
   MapPin,
-  Wand2
+  Wand2,
+  Play,
+  Server,
+  RotateCcw,
 } from "lucide-react";
 import { useState } from "react";
 import { Eyebrow, Reveal, Section } from "./primitives";
@@ -27,67 +26,66 @@ import {
   GeoNetworkModal,
   MistralPredictionModal
 } from "./node-modals";
-import { Button } from "../ui/button";
 
 const TOOLS = [
-  { icon: Play, label: "Trigger" },
-  { icon: MapPin, label: "Geo Network" },
-  { icon: Globe, label: "Web Scraper" },
-  { icon: Bot, label: "LLM Extract" },
+  { icon: Play, label: "CLI" },
+  { icon: MapPin, label: "Scrape" },
+  { icon: Globe, label: "Extract" },
+  { icon: BrainCircuit, label: "AI" },
   { icon: Filter, label: "Filter" },
-  { icon: Wand2, label: "Prediction" },
-  { icon: Database, label: "Warehouse" },
+  { icon: Wand2, label: "Heal" },
+  { icon: Database, label: "Output" },
 ];
 
 const STEPS = [
   {
     id: "trigger",
     icon: Timer,
-    kind: "Trigger",
-    title: "Schedule: Daily at 9AM",
-    detail: "Run automatically to check AI company blogs",
+    kind: "CLI Command",
+    title: "bdata scraper create",
+    detail: "Create a new scraper with AI from a URL description",
   },
   {
     id: "geo",
     icon: MapPin,
-    kind: "Geo Network",
-    title: "US Residential Proxies",
-    detail: "Route traffic to avoid localized blocks",
+    kind: "Scrape",
+    title: "bdata scraper run",
+    detail: "Run the scraper and get structured JSON data",
   },
   {
     id: "scraper",
     icon: Globe,
-    kind: "Web Scraper",
-    title: "AI Release Scraper",
-    detail: "Target: Anthropic, OpenAI, Kimi, Cursor",
+    kind: "Extract",
+    title: "Bright Data Web Unlocker",
+    detail: "Proxy rotation, anti-bot bypass, clean HTML",
   },
   {
     id: "llm",
     icon: BrainCircuit,
-    kind: "LLM Extract",
-    title: "Changelog Parser",
-    detail: "GPT-4o extracts new models & context windows",
+    kind: "AI Analysis",
+    title: "Gemini 2.5 Flash",
+    detail: "Extract strategic insights from scraped content",
   },
   {
     id: "filter",
     icon: Filter,
-    kind: "Filter",
-    title: "Major Updates Only",
-    detail: "Ignore minor patches and typo fixes",
+    kind: "Self-Heal",
+    title: "bdata scraper heal",
+    detail: "Auto-repair broken selectors when site changes",
   },
   {
     id: "predict",
     icon: Wand2,
-    kind: "Future Prediction",
-    title: "Mistral Trend Analysis",
-    detail: "Predict next release cycle (mistral-large-latest)",
+    kind: "Approve",
+    title: "bdata scraper approve",
+    detail: "Approve or reject the AI-generated fix",
   },
   {
     id: "warehouse",
     icon: Database,
-    kind: "Warehouse",
-    title: "Slack & Supabase",
-    detail: "Alert engineering team & log to database",
+    kind: "Dashboard",
+    title: "Live Alerts",
+    detail: "View results in the Web Miner dashboard",
   },
 ];
 
@@ -108,13 +106,17 @@ export function Pipeline() {
           <Reveal>
             <Eyebrow>Visual builder</Eyebrow>
             <h2 className="mt-5 text-[34px] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-[46px]">
-              Automate AI Model & API Monitoring.
+              Self-Healing Scraper Pipeline.
             </h2>
             <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-ink-soft">
-              Schedule scraping jobs to track the latest API releases and pricing changes from top AI companies. Automatically parse unstructured blog posts with LLMs, filter for major updates, and alert your engineering team instantly.
+              Scrape any public website with Bright Data, analyze content with Gemini AI, and watch the scraper automatically repair itself when the site changes its layout. The entire pipeline runs from your terminal.
             </p>
             <ul className="mt-7 space-y-3">
-              {BULLETS.map((b) => (
+              {[
+                "Scrape public websites using Bright Data's Web Unlocker and proxy network.",
+                "Analyze content with Gemini AI to extract strategic insights automatically.",
+                "Self-heal broken selectors when websites change their HTML structure.",
+              ].map((b) => (
                 <li key={b} className="flex items-start gap-3 text-[15px] text-ink">
                   <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand-tint text-brand">
                     <Check className="size-3" />
@@ -200,15 +202,14 @@ export function Pipeline() {
 
                   <div className="rounded-2xl border border-hairline bg-surface p-3.5">
                     <p className="flex items-center gap-2 text-[12px] font-semibold text-ink">
-                      <Database className="size-3.5 text-brand" /> Database Output Preview
+                      <Database className="size-3.5 text-brand" /> AI Insight Output
                     </p>
                     <pre className="mt-2 overflow-x-auto font-mono text-[11px] leading-relaxed text-ink-soft">
                       {`{
-  "company": "Anthropic",
-  "update_type": "New Model Release",
-  "model": "Claude 3.5 Sonnet",
-  "context_window": "200K tokens",
-  "pricing_per_1m_input": "$3.00"
+  "tone": "high",
+  "title": "New pricing tier detected",
+  "body": "Company added enterprise plan",
+  "time": "just now"
 }`}
                     </pre>
                   </div>

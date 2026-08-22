@@ -122,7 +122,7 @@ function TriggerModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v:
 
 function ScraperStudioModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   const [url, setUrl] = useState("https://anthropic.com/news");
-  const [collectorId, setCollectorId] = useState("c_lx8k92mn");
+  const [collectorId, setCollectorId] = useState("");
   const [ipRotation, setIpRotation] = useState(true);
 
   return (
@@ -343,8 +343,7 @@ const CURSOR_SNIPPET = `// .cursor/mcp.json
     "dev-tool-intel": {
       "command": "npx",
       "args": ["-y", "@webminer/mcp-server"],
-      "env": {
-        "WEBMINER_API_KEY": "wm_live_xxxxxx"
+      "env": {                "WEBMINER_API_KEY": "wm_live_your_key_here"
       }
     }
   }
@@ -712,7 +711,7 @@ function MistralPredictionModal({ open, onOpenChange }: { open: boolean; onOpenC
             <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5">Mistral API Key</label>
             <input
               type="password"
-              defaultValue="h3cLHq2L7diZ5jIlf7dKaD9t5CPJGrRt"
+              placeholder="Enter your Mistral API key..."
               className="w-full rounded-lg border border-hairline bg-surface px-3 py-2 text-sm font-mono text-muted-foreground focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
             />
           </div>

@@ -5,12 +5,11 @@ import { Pipeline } from "@/components/landing/pipeline";
 import { Bento } from "@/components/landing/bento";
 import { Console } from "@/components/landing/console";
 import { Insights } from "@/components/landing/insights";
-import { FinalCta } from "@/components/landing/cta";
-import { Faq, Pricing, SiteFooter } from "@/components/landing/closing";
+import { SiteFooter } from "@/components/landing/closing";
 
-const TITLE = "Web Miner — Automate scraping workflows with AI";
+const TITLE = "Web Miner — Self-Healing Web Scraper with AI";
 const DESCRIPTION =
-  "Web Miner turns any website into clean, structured data. Build extraction pipelines on a visual canvas, run them on rotating proxies, and deliver JSON to your warehouse.";
+  "Web Miner is a self-healing web scraper powered by Bright Data and Gemini AI. It automatically repairs broken selectors when websites change their layout, keeping your data pipelines running.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,19 +22,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "Web Miner",
-          applicationCategory: "BusinessApplication",
-          description: DESCRIPTION,
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        }),
-      },
-    ],
   }),
   component: Index,
 });
@@ -50,9 +36,6 @@ function Index() {
         <Console />
         <Insights />
         <Bento />
-        <Pricing />
-        <Faq />
-        <FinalCta />
       </main>
       <SiteFooter />
     </div>
