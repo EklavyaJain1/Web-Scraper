@@ -365,7 +365,7 @@ export default function KineticGrid({
     >
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-40"
+        className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-65"
       />
 
       <div className="relative z-10 w-full h-full">{children}</div>
