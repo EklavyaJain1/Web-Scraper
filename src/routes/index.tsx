@@ -6,6 +6,7 @@ import { Bento } from "@/components/landing/bento";
 import { Console } from "@/components/landing/console";
 import { Insights } from "@/components/landing/insights";
 import { SiteFooter } from "@/components/landing/closing";
+import KineticGrid from "@/components/ui/kinetic-grid";
 
 const TITLE = "Web Miner — Self-Healing Web Scraper with AI";
 const DESCRIPTION =
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <KineticGrid className="bg-background">
       <SiteNav />
       <main>
         <Hero />
@@ -38,6 +39,6 @@ function Index() {
         <Bento />
       </main>
       <SiteFooter />
-    </div>
+    </KineticGrid>
   );
 }

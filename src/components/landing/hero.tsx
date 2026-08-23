@@ -52,7 +52,6 @@ function CanvasNode({
         <span className="block h-1.5 w-full rounded-full bg-surface-2" />
         <span className="block h-1.5 w-2/3 rounded-full bg-surface-2" />
       </div>
-      <span className="mt-2.5 block text-center text-[9px] font-bold text-muted-foreground tracking-[0.05em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">Click to configure</span>
     </motion.div>
   );
 }
