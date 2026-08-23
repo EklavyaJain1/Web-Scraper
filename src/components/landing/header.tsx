@@ -53,13 +53,14 @@ export function SiteNav() {
 
         <div className="flex justify-end md:hidden">
           <button
-          type="button"
-          aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
-          className="grid size-9 shrink-0 place-items-center rounded-full border border-hairline text-ink md:hidden"
-        >
-          {open ? <X className="size-4" /> : <Menu className="size-4" />}
-        </button>
+            type="button"
+            aria-label="Toggle menu"
+            onClick={() => setOpen((v) => !v)}
+            className="grid size-9 shrink-0 place-items-center rounded-full border border-hairline text-ink md:hidden"
+          >
+            {open ? <X className="size-4" /> : <Menu className="size-4" />}
+          </button>
+        </div>
       </div>
 
       {open && (

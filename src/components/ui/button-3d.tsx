@@ -85,23 +85,23 @@ export const Button3D = ({
         ${className}
       `}
       initial={{ 
-        boxShadow: \`0 4px 0 0 \${shadowColor}\`,
+        boxShadow: `0 4px 0 0 ${shadowColor}`,
         y: 0 
       }}
       whileHover={{ 
         scale: 1.02,
-        boxShadow: \`0 6px 0 0 \${shadowColor}\`,
+        boxShadow: `0 6px 0 0 ${shadowColor}`,
         transition: { duration: 0.1 }
       }}
       whileTap={{ 
         scale: 0.98,
         y: 4,
-        boxShadow: \`0 0px 0 0 \${shadowColor}\`,
+        boxShadow: `0 0px 0 0 ${shadowColor}`,
         transition: { duration: 0.1 }
       }}
       animate={{
         y: isPressed ? 4 : 0,
-        boxShadow: isPressed ? \`0 0px 0 0 \${shadowColor}\` : \`0 4px 0 0 \${shadowColor}\`
+        boxShadow: isPressed ? `0 0px 0 0 ${shadowColor}` : `0 4px 0 0 ${shadowColor}`
       }}
       transition={{
         type: "spring",
