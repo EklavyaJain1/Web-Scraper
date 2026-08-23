@@ -1,5 +1,10 @@
+"use client";
+
 import { Braces, Clock, Shield, Zap, Boxes, LineChart } from "lucide-react";
 import { Eyebrow, Reveal, Section } from "./primitives";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const CARDS = [
   {
@@ -35,6 +40,16 @@ const CARDS = [
 ];
 
 export function Bento() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 0]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [50, -50]);
+
   return (
     <Section id="solutions" className="py-16 md:py-24">
       <Reveal>
@@ -46,18 +61,26 @@ export function Bento() {
         </div>
       </Reveal>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CARDS.map((c, i) => (
-          <Reveal key={c.title} delay={i * 70}>
-            <article className="group h-full rounded-2xl border border-hairline bg-card p-6 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift">
-              <span className="grid size-10 place-items-center rounded-xl border border-hairline bg-surface text-brand transition-colors group-hover:bg-brand-tint">
-                <c.icon className="size-5" />
-              </span>
-              <h3 className="mt-5 text-[17px] font-bold tracking-tight text-ink">{c.title}</h3>
-              <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">{c.body}</p>
-            </article>
-          </Reveal>
-        ))}
+      <div ref={containerRef} className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 perspective-[1000px]">
+        {CARDS.map((c, i) => {
+          const yOffset = i % 3 === 0 ? y1 : i % 3 === 1 ? y2 : y3;
+          
+          return (
+            <motion.div key={c.title} style={{ y: yOffset }}>
+              <Reveal delay={i * 70}>
+                <TiltCard>
+                  <article className="group h-full rounded-2xl border border-hairline bg-card p-6 transition-all hover:border-brand/40 shadow-soft hover:shadow-lift bg-gradient-to-br from-card to-card hover:from-surface hover:to-card">
+                    <span className="grid size-10 place-items-center rounded-xl border border-hairline bg-surface text-brand transition-colors group-hover:bg-brand-tint group-hover:shadow-[0_0_15px_rgba(74,100,200,0.4)]">
+                      <c.icon className="size-5" />
+                    </span>
+                    <h3 className="mt-5 text-[17px] font-bold tracking-tight text-ink">{c.title}</h3>
+                    <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">{c.body}</p>
+                  </article>
+                </TiltCard>
+              </Reveal>
+            </motion.div>
+          );
+        })}
       </div>
     </Section>
   );

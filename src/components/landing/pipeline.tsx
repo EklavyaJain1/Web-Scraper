@@ -158,18 +158,29 @@ export function Pipeline() {
                           </p>
                         </div>
                         {i < STEPS.length - 1 && (
-                          <svg
-                            className="mx-auto block h-8 w-6"
-                            viewBox="0 0 24 32"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d="M12 0 C 12 16, 12 16, 12 32"
-                              className="animate-dash stroke-brand"
-                              fill="none"
-                              strokeWidth="2"
+                          <div className="relative mx-auto block h-8 w-6">
+                            <svg
+                              className="absolute inset-0 size-full"
+                              viewBox="0 0 24 32"
+                              aria-hidden="true"
+                            >
+                              <path
+                                id={`path-${i}`}
+                                d="M12 0 C 12 16, 12 16, 12 32"
+                                className="animate-dash stroke-brand/30"
+                                fill="none"
+                                strokeWidth="2"
+                              />
+                            </svg>
+                            <div 
+                              className="absolute left-1/2 -ml-1 top-0 size-2 rounded-full bg-brand shadow-[0_0_8px_2px_rgba(74,100,200,0.8)]"
+                              style={{
+                                animation: `travel-down 2s linear infinite ${i * 0.5}s`,
+                                offsetPath: `path('M12 0 C 12 16, 12 16, 12 32')`,
+                                offsetDistance: "0%"
+                              }}
                             />
-                          </svg>
+                          </div>
                         )}
                       </div>
                     </div>

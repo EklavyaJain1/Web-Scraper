@@ -1,5 +1,6 @@
 import { Bot, Flag, RefreshCw, Scale } from "lucide-react";
 import { Eyebrow, Reveal, Section } from "./primitives";
+import { TiltCard } from "@/components/ui/tilt-card";
 
 function CostCard() {
   return (
@@ -119,15 +120,17 @@ export function Insights() {
         </h2>
       </Reveal>
 
-      <div className="mt-10 grid gap-5 lg:grid-cols-3">
+      <div className="mt-10 grid gap-5 lg:grid-cols-3 perspective-[1000px]">
         {CARDS.map((c, i) => (
           <Reveal key={c.title} delay={i * 90}>
-            <div className="h-full">
-              <c.render />
-              <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
-                <span className="font-semibold text-ink">{c.title}</span> {c.body}
-              </p>
-            </div>
+            <TiltCard>
+              <div className="h-full group">
+                <c.render />
+                <p className="mt-4 text-[15px] leading-relaxed text-ink-soft transition-colors group-hover:text-ink">
+                  <span className="font-semibold text-ink">{c.title}</span> {c.body}
+                </p>
+              </div>
+            </TiltCard>
           </Reveal>
         ))}
       </div>

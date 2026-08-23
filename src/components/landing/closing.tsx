@@ -172,6 +172,8 @@ export function Faq() {
   );
 }
 
+import { MagneticButton } from "@/components/ui/magnetic-button";
+
 export function FinalCta() {
   return (
     <Section id="cta">
@@ -187,20 +189,24 @@ export function FinalCta() {
               Run the self-healing scraper pipeline and watch it adapt to website changes in real-time.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a
-                href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-full gradient-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
-              >
-                Try the Demo <ArrowRight className="size-4" />
-              </a>
-              <a
-                href="https://github.com/EklavyaJain1/gumloop-reimagined"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-6 py-3 text-[15px] font-medium text-ink hover:bg-surface-2"
-              >
-                View Source
-              </a>
+              <MagneticButton>
+                <a
+                  href="/dashboard"
+                  className="inline-flex items-center gap-2 rounded-full gradient-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
+                >
+                  Try the Demo <ArrowRight className="size-4" />
+                </a>
+              </MagneticButton>
+              <MagneticButton>
+                <a
+                  href="https://github.com/EklavyaJain1/gumloop-reimagined"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-6 py-3 text-[15px] font-medium text-ink hover:bg-surface-2"
+                >
+                  View Source
+                </a>
+              </MagneticButton>
             </div>
           </div>
         </div>
