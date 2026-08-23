@@ -87,7 +87,7 @@ export function Console() {
           <div className="grid gap-6">
             {/* TOP RIGHT: Skills / Scraper Config */}
             <div className="flex flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift">
-              <div className="p-6 relative scanlines">
+              <div className="p-6">
                 <div className="flex items-center gap-2 border-b border-hairline pb-3">
                   <span className="size-2.5 rounded-full bg-surface-2" />
                   <span className="size-2.5 rounded-full bg-surface-2" />

@@ -40,16 +40,6 @@ const CARDS = [
 ];
 
 export function Bento() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 0]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [50, -50]);
-
   return (
     <Section id="solutions" className="py-16 md:py-24">
       <Reveal>
@@ -61,15 +51,13 @@ export function Bento() {
         </div>
       </Reveal>
 
-      <div ref={containerRef} className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 perspective-[1000px]">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 perspective-[1000px]">
         {CARDS.map((c, i) => {
-          const yOffset = i % 3 === 0 ? y1 : i % 3 === 1 ? y2 : y3;
-          
           return (
-            <motion.div key={c.title} style={{ y: yOffset }}>
+            <div key={c.title}>
               <Reveal delay={i * 70}>
                 <TiltCard>
-                  <article className="group h-full rounded-2xl border border-hairline bg-card p-6 transition-all hover:border-brand/40 shadow-soft hover:shadow-lift bg-gradient-to-br from-card to-card hover:from-surface hover:to-card">
+                  <article className="group h-full rounded-2xl border border-hairline bg-card p-6 transition-all hover:-translate-y-2 hover:border-brand/40 shadow-soft hover:shadow-lift bg-gradient-to-br from-card to-card hover:from-surface hover:to-card">
                     <span className="grid size-10 place-items-center rounded-xl border border-hairline bg-surface text-brand transition-colors group-hover:bg-brand-tint group-hover:shadow-[0_0_15px_rgba(74,100,200,0.4)]">
                       <c.icon className="size-5" />
                     </span>
@@ -78,7 +66,7 @@ export function Bento() {
                   </article>
                 </TiltCard>
               </Reveal>
-            </motion.div>
+            </div>
           );
         })}
       </div>

@@ -124,7 +124,7 @@ export function Insights() {
         {CARDS.map((c, i) => (
           <Reveal key={c.title} delay={i * 90}>
             <TiltCard>
-              <div className="h-full group">
+              <div className="h-full group transition-transform duration-300 hover:-translate-y-2">
                 <c.render />
                 <p className="mt-4 text-[15px] leading-relaxed text-ink-soft transition-colors group-hover:text-ink">
                   <span className="font-semibold text-ink">{c.title}</span> {c.body}
