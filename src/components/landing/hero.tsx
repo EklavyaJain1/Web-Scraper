@@ -304,7 +304,7 @@ export function Hero() {
     <div id="top" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[620px] dot-grid opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
       
-      <Section className="relative pb-8 pt-14 md:pb-12 md:pt-20">
+      <Section className="relative pb-8 pt-4 md:pb-12 md:pt-6">
         <AnimatedHero />
 
         <Reveal delay={320}>

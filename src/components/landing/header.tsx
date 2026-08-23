@@ -3,6 +3,8 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./primitives";
 import { cn } from "@/lib/utils";
 
+import { Button3D } from "@/components/ui/button-3d";
+
 const NAV = [
   { label: "Product", href: "#product" },
   { label: "Live Demo", href: "/dashboard" },
@@ -26,24 +28,31 @@ export function SiteNav() {
         scrolled ? "border-hairline bg-background/85 backdrop-blur-xl" : "border-transparent",
       )}
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 sm:px-8 md:grid-cols-2">
-        <a href="#top" aria-label="Web Miner home" className="min-w-0">
-          <Logo />
-        </a>
+      <div className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-3 items-center gap-4 px-5 py-3.5 sm:px-8">
+        <div className="flex justify-start">
+          <a href="#top" aria-label="Web Miner home" className="min-w-0">
+            <Logo />
+          </a>
+        </div>
 
-        <nav className="hidden items-center justify-end gap-1 md:flex">
-          {NAV.map((item) => (
-            <a
+        <nav className="hidden items-center justify-center gap-4 md:flex">
+          {NAV.map((item, idx) => (
+            <Button3D
               key={item.label}
+              as="a"
               href={item.href}
-              className="whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink"
+              variant={idx === 0 ? "secondary" : "primary"}
+              size="sm"
             >
               {item.label}
-            </a>
+            </Button3D>
           ))}
         </nav>
 
-        <button
+        <div className="hidden md:flex justify-end" />
+
+        <div className="flex justify-end md:hidden">
+          <button
           type="button"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
@@ -55,16 +64,18 @@ export function SiteNav() {
 
       {open && (
         <div className="border-t border-hairline bg-background px-5 py-4 md:hidden">
-          <div className="flex flex-col">
-            {NAV.map((item) => (
-              <a
+          <div className="flex flex-col gap-3">
+            {NAV.map((item, idx) => (
+              <Button3D
                 key={item.label}
+                as="a"
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-2 py-2.5 text-[15px] font-medium text-ink-soft hover:bg-surface-2 hover:text-ink"
+                variant={idx === 0 ? "secondary" : "primary"}
+                className="w-full"
               >
                 {item.label}
-              </a>
+              </Button3D>
             ))}
           </div>
         </div>
