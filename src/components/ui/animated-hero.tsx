@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { MoveRight, PhoneCall } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
-    () => ["amazing", "new", "wonderful", "beautiful", "smart"],
+    () => ["AI", "scale", "confidence", "precision", "Bright Data"],
     []
   );
 
@@ -24,21 +23,23 @@ function Hero() {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
+        <div className="flex gap-6 py-6 md:py-10 items-center justify-center flex-col text-center">
           <div>
-            <Button variant="secondary" size="sm" className="gap-4">
-              Read our launch article <MoveRight className="w-4 h-4" />
-            </Button>
+            <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3.5 py-1.5 text-[12px] font-medium text-ink-soft shadow-soft">
+              <Sparkles className="size-3.5 text-brand" />
+              New — AI extraction agents
+            </span>
           </div>
+          
           <div className="flex gap-4 flex-col">
-            <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
-              <span className="text-spektr-cyan-50">This is something</span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
+            <h1 className="text-[42px] sm:text-6xl md:text-[70px] max-w-4xl tracking-tighter text-center font-extrabold leading-[1.02] text-ink">
+              <span className="text-ink">Automate your scraping workflows with</span>
+              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-brand">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span
                     key={index}
-                    className="absolute font-semibold"
+                    className="absolute font-extrabold"
                     initial={{ opacity: 0, y: "-100" }}
                     transition={{ type: "spring", stiffness: 50 }}
                     animate={
@@ -59,20 +60,26 @@ function Hero() {
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-              Managing a small business today is already tough. Avoid further
-              complications by ditching outdated, tedious trade methods. Our
-              goal is to streamline SMB trade, making it easier and faster than
-              ever.
+            <p className="mx-auto mt-2 max-w-xl text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
+              Web Miner is a self-healing web scraper that automatically repairs broken selectors
+              when websites change their layout. Powered by Bright Data and Gemini AI.
             </p>
           </div>
-          <div className="flex flex-row gap-3">
-            <Button size="lg" className="gap-4" variant="outline">
-              Jump on a call <PhoneCall className="w-4 h-4" />
-            </Button>
-            <Button size="lg" className="gap-4">
-              Sign up here <MoveRight className="w-4 h-4" />
-            </Button>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="/dashboard"
+              className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
+            >
+              Try the Demo <ArrowRight className="size-4" />
+            </a>
+            <a
+              href="https://github.com/EklavyaJain1/gumloop-reimagined"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card px-6 py-3 text-[15px] font-medium text-ink transition-colors hover:bg-surface-2"
+            >
+              View Source
+            </a>
           </div>
         </div>
       </div>
