@@ -38,14 +38,14 @@ const MODULE_CONFIG: Record<
 
 // Pipeline node positions (percentage-based)
 const NODES = [
-  { key: "target" as ModuleKey, title: "Target URL", x: 4, y: 28 },
-  { key: "scrape" as ModuleKey, title: "Bright Data Scrape", x: 38, y: 28 },
-  { key: "brain" as ModuleKey, title: "Gemini AI Brain", x: 72, y: 28 },
+  { key: "target" as ModuleKey, title: "Target URL", x: 4, y: 12 },
+  { key: "scrape" as ModuleKey, title: "Bright Data Scrape", x: 38, y: 12 },
+  { key: "brain" as ModuleKey, title: "Gemini AI Brain", x: 72, y: 12 },
 ];
 
 const EDGES = [
-  { from: "target", to: "scrape", d: "M 150 150 C 250 150, 250 150, 380 150" },
-  { from: "scrape", to: "brain", d: "M 540 150 C 640 150, 640 150, 720 150" },
+  { from: "target", to: "scrape", d: "M 150 70 C 250 70, 250 70, 380 70" },
+  { from: "scrape", to: "brain", d: "M 540 70 C 640 70, 640 70, 720 70" },
 ];
 
 export function IntelligenceCanvas() {
@@ -305,7 +305,7 @@ export function IntelligenceCanvas() {
         </div>
       )}
 
-      <div className="grid flex-1 grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)_320px]">
+      <div className="grid flex-1 grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)]">
         {/* Sidebar — Modules */}
         <aside className="border-b border-hairline bg-surface p-4 lg:border-b-0 lg:border-r">
           <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -378,10 +378,10 @@ export function IntelligenceCanvas() {
         </aside>
 
         {/* Canvas — Node graph */}
-        <main className="relative min-h-[520px] overflow-hidden bg-background lg:h-[calc(100vh-61px)]">
+        <main className="relative min-h-[520px] overflow-hidden bg-background lg:h-[calc(100vh-61px)] flex flex-col">
           <div className="absolute inset-0 dot-grid" />
-          <div className="relative mx-auto h-full w-full max-w-[980px] px-4 py-6">
-            <div className="relative h-[320px] w-full">
+          <div className="relative mx-auto h-full w-full max-w-[980px] px-4 py-6 flex flex-col overflow-hidden">
+            <div className="relative h-[160px] w-full shrink-0">
               {/* SVG edges */}
               <svg
                 className="pointer-events-none absolute inset-0 size-full"
@@ -462,12 +462,11 @@ export function IntelligenceCanvas() {
                 );
               })}
             </div>
-          </div>
-        </main>
 
-        {/* Sidebar — Live Alerts */}
-        <aside className="border-t border-hairline bg-surface p-4 lg:border-l lg:border-t-0">
-          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 overflow-auto mt-6 rounded-2xl border border-hairline bg-surface/50 p-6 shadow-soft">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <div className="flex items-center justify-between gap-3">
             <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               Live Alerts
             </p>
@@ -558,7 +557,9 @@ export function IntelligenceCanvas() {
             )}
           </div>
 
-          {/* Raw scrape preview */}
+                </div>
+                <div className="flex flex-col">
+                  {/* Raw scrape preview */}
           {rawScrape && (
             <div className="mt-4">
               <div className="flex items-center justify-between">
@@ -617,7 +618,11 @@ export function IntelligenceCanvas() {
               <Tag className="size-3.5 shrink-0 text-brand" /> Collector: <span className="font-mono text-[11px]">{collectorId}</span>
             </div>
           </div>
-        </aside>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );
