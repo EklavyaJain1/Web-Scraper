@@ -41,18 +41,22 @@ export type AlertData = {
 // Fast scrape — uses Bright Data Web Unlocker API directly
 // ---------------------------------------------------------------------------
 
-async function scrapeWithWebUnlocker(url: string): Promise<string> {
+async function scrapeWithWebUnlocker(url: string, country?: string): Promise<string> {
   const BRIGHT_DATA_API_KEY = process.env["BRIGHT_DATA_API_KEY"] || "";
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
   };
 
-  const body = {
+  const body: Record<string, any> = {
     url,
     format: "markdown",
     zone: "unblocker",
   };
+  
+  if (country && country !== "any") {
+    body.country = country.toLowerCase();
+  }
 
   try {
     const response = await fetch(BRIGHT_DATA_UNLOCKER_API, {
@@ -107,7 +111,7 @@ function extractTextFromHtml(html: string): string {
 // ---------------------------------------------------------------------------
 
 export const runIntelligencePipeline = createServerFn({ method: "POST" })
-  .validator((d: { url: string }) => d)
+  .validator((d: { url: string; country?: string }) => d)
   .handler(async ({ data }): Promise<PipelineResult> => {
     const targetMod: ScraperModule = { key: "target", label: "Target URL", status: "running" };
     const scrapeMod: ScraperModule = { key: "scrape", label: "Bright Data Scrape", status: "idle" };
@@ -115,7 +119,7 @@ export const runIntelligencePipeline = createServerFn({ method: "POST" })
     const modules: ScraperModule[] = [targetMod, scrapeMod, brainMod];
 
     try {
-      console.log(`[Pipeline] Starting for URL: ${data.url}`);
+      console.log(`[Pipeline] Starting for URL: ${data.url} (Country: ${data.country || 'any'})`);
 
       // --- Module 1: Scrape the target (fast Web Unlocker) ---
       targetMod.status = "done";
@@ -124,7 +128,7 @@ export const runIntelligencePipeline = createServerFn({ method: "POST" })
       let scrapedContent: string;
 
       try {
-        scrapedContent = await scrapeWithWebUnlocker(data.url);
+        scrapedContent = await scrapeWithWebUnlocker(data.url, data.country);
       } catch (scrapeErr: any) {
         console.warn("[Pipeline] Fallback chain:", scrapeErr.message);
         scrapedContent = await fallbackFetch(data.url);
@@ -217,8 +221,12 @@ ${scrapedContent.substring(0, 12_000)}`;
     }
   });
 
+import { exec } from "child_process";
+import { promisify } from "util";
+const execAsync = promisify(exec);
+
 // ---------------------------------------------------------------------------
-// Self-healing server function — triggers Bright Data scraper heal via API
+// Self-healing server function — triggers Bright Data scraper heal via CLI
 // ---------------------------------------------------------------------------
 
 export const runSelfHeal = createServerFn({ method: "POST" })
@@ -230,32 +238,26 @@ export const runSelfHeal = createServerFn({ method: "POST" })
         return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
       }
 
-      const response = await fetch(`${BRIGHT_DATA_SCRAPE_API}/heal`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
-        },
-        body: JSON.stringify({
-          collector_id: data.collectorId,
-          instruction: data.instruction,
-        }),
-      });
+      console.log(`[SelfHeal] Triggering heal for ${data.collectorId}: ${data.instruction}`);
+      
+      const { stdout, stderr } = await execAsync(
+        `npx -p @brightdata/cli bdata scraper heal "${data.collectorId}" "${data.instruction}"`,
+        { env: { ...process.env, BRIGHT_DATA_API_KEY } }
+      );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        return { success: false, error: `API error: ${response.status} - ${errorText}` };
+      if (stderr && !stdout) {
+        return { success: false, error: stderr };
       }
 
-      const output = await response.text();
-      return { success: true, output };
+      return { success: true, output: stdout || stderr || "Heal process completed successfully." };
     } catch (error: any) {
+      console.error("[SelfHeal] Error:", error);
       return { success: false, error: error.message };
     }
   });
 
 // ---------------------------------------------------------------------------
-// Approve/Reject heal via API
+// Approve/Reject heal via CLI
 // ---------------------------------------------------------------------------
 
 export const approveHeal = createServerFn({ method: "POST" })
@@ -267,26 +269,24 @@ export const approveHeal = createServerFn({ method: "POST" })
         return { success: false, error: "BRIGHT_DATA_API_KEY not configured" };
       }
 
-      const response = await fetch(`${BRIGHT_DATA_SCRAPE_API}/approve`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
-        },
-        body: JSON.stringify({
-          collector_id: data.collectorId,
-          approve: data.approve,
-        }),
-      });
+      console.log(`[SelfHeal] Approving/Rejecting heal for ${data.collectorId} (Approve: ${data.approve})`);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        return { success: false, error: `API error: ${response.status} - ${errorText}` };
+      if (!data.approve) {
+         return { success: true, output: "Heal rejected. Reverting to previous version." };
       }
 
-      const output = await response.text();
-      return { success: true, output };
+      const { stdout, stderr } = await execAsync(
+        `npx -p @brightdata/cli bdata scraper approve "${data.collectorId}"`,
+        { env: { ...process.env, BRIGHT_DATA_API_KEY } }
+      );
+
+      if (stderr && !stdout) {
+        return { success: false, error: stderr };
+      }
+
+      return { success: true, output: stdout || stderr || "Heal approved successfully." };
     } catch (error: any) {
+      console.error("[SelfHeal] Approve Error:", error);
       return { success: false, error: error.message };
     }
   });

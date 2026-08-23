@@ -1,8 +1,24 @@
-import { ArrowRight, Bot, Globe, Sparkles, Server, RefreshCw, TerminalSquare, BrainCircuit } from "lucide-react";
+import {
+  ArrowRight,
+  Bot,
+  Globe,
+  Sparkles,
+  Server,
+  RefreshCw,
+  TerminalSquare,
+  BrainCircuit,
+  Network,
+} from "lucide-react";
 import { Reveal, Section } from "./primitives";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { TriggerModal, ScraperStudioModal, SelfHealingModal, MCPOutputModal, LLMExtractModal } from "./node-modals";
+import {
+  TriggerModal,
+  ScraperStudioModal,
+  SelfHealingModal,
+  MCPOutputModal,
+  LLMExtractModal,
+} from "./node-modals";
 
 function CanvasNode({
   icon: Icon,
@@ -25,7 +41,11 @@ function CanvasNode({
       drag
       dragConstraints={{ left: -6, right: 6, top: -6, bottom: 6 }}
       dragElastic={0.08}
-      whileHover={{ scale: 1.02, y: -2, boxShadow: "0 12px 24px -4px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)" }}
+      whileHover={{
+        scale: 1.02,
+        y: -2,
+        boxShadow: "0 12px 24px -4px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
+      }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       onClick={onClick}
@@ -113,7 +133,9 @@ function TerminalStream() {
     >
       <div className="flex items-center gap-2 mb-2 border-b border-white/10 pb-2">
         <TerminalSquare className="size-3.5 text-brand" />
-        <span className="text-white/60 font-mono text-[10px] uppercase tracking-wider">terminal_stream.log</span>
+        <span className="text-white/60 font-mono text-[10px] uppercase tracking-wider">
+          terminal_stream.log
+        </span>
       </div>
       <div className="space-y-1.5 text-white/80 min-h-[70px] font-mono text-[10px]">
         {logs.map((log, idx) => (
@@ -159,7 +181,9 @@ function TerminalStream() {
 */
 
 function WorkflowCanvas() {
-  const [activeModal, setActiveModal] = useState<"trigger" | "scraper" | "heal" | "mcp" | "llm" | null>(null);
+  const [activeModal, setActiveModal] = useState<
+    "trigger" | "scraper" | "heal" | "mcp" | "llm" | null
+  >(null);
 
   /* ---- Node dimensions (approx) ----
      Each CanvasNode is w-[210px]. The inner content makes them ~110px tall.
@@ -285,11 +309,26 @@ function WorkflowCanvas() {
           <TerminalStream />
 
           {/* Node Modals */}
-          <TriggerModal open={activeModal === "trigger"} onOpenChange={(v) => !v && setActiveModal(null)} />
-          <ScraperStudioModal open={activeModal === "scraper"} onOpenChange={(v) => !v && setActiveModal(null)} />
-          <LLMExtractModal open={activeModal === "llm"} onOpenChange={(v) => !v && setActiveModal(null)} />
-          <SelfHealingModal open={activeModal === "heal"} onOpenChange={(v) => !v && setActiveModal(null)} />
-          <MCPOutputModal open={activeModal === "mcp"} onOpenChange={(v) => !v && setActiveModal(null)} />
+          <TriggerModal
+            open={activeModal === "trigger"}
+            onOpenChange={(v) => !v && setActiveModal(null)}
+          />
+          <ScraperStudioModal
+            open={activeModal === "scraper"}
+            onOpenChange={(v) => !v && setActiveModal(null)}
+          />
+          <LLMExtractModal
+            open={activeModal === "llm"}
+            onOpenChange={(v) => !v && setActiveModal(null)}
+          />
+          <SelfHealingModal
+            open={activeModal === "heal"}
+            onOpenChange={(v) => !v && setActiveModal(null)}
+          />
+          <MCPOutputModal
+            open={activeModal === "mcp"}
+            onOpenChange={(v) => !v && setActiveModal(null)}
+          />
         </div>
       </div>
     </div>
@@ -301,8 +340,8 @@ import { Hero as AnimatedHero } from "@/components/ui/animated-hero";
 export function Hero() {
   return (
     <div id="top" className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[620px] dot-grid opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[620px] dot-grid opacity-100 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+
       <Section className="relative pb-8 pt-4 md:pb-12 md:pt-6">
         <AnimatedHero />
 
@@ -310,8 +349,6 @@ export function Hero() {
           <WorkflowCanvas />
         </Reveal>
       </Section>
-
-
     </div>
   );
 }

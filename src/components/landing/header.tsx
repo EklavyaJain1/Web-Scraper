@@ -21,8 +21,7 @@ export function SiteNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b transition-colors duration-300",
-        scrolled ? "border-hairline bg-background/85 backdrop-blur-xl" : "border-transparent",
+        "sticky top-0 z-50 transition-colors duration-300 bg-background/60 backdrop-blur-xl",
       )}
     >
       <div className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-3 items-center gap-4 px-5 py-3.5 sm:px-8">

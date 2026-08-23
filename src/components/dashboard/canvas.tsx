@@ -58,6 +58,7 @@ export function IntelligenceCanvas() {
   const [rawScrape, setRawScrape] = useState("");
   const [structuredData, setStructuredData] = useState("");
   const [targetUrl, setTargetUrl] = useState("https://news.ycombinator.com");
+  const [country, setCountry] = useState("any");
   const [errorMsg, setErrorMsg] = useState("");
   const [copied, setCopied] = useState(false);
   const [collectorId, setCollectorId] = useState("c_mt4buklh24bcxhyzu0");
@@ -97,7 +98,7 @@ export function IntelligenceCanvas() {
     });
 
     try {
-      const result = await runIntelligencePipeline({ data: { url: targetUrl } });
+      const result = await runIntelligencePipeline({ data: { url: targetUrl, country } });
 
       // Mark all modules as done
       setModuleStates({ target: "done", scrape: "done", brain: "done" });
@@ -194,6 +195,18 @@ export function IntelligenceCanvas() {
               className="h-8 w-[300px] rounded-full border border-hairline bg-surface pl-9 pr-3 text-[12px] font-medium text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
               placeholder="Enter target URL to scrape..."
             />
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="h-8 rounded-full border border-hairline bg-surface px-3 text-[12px] font-medium text-ink focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            >
+              <option value="any">🌍 Any Region</option>
+              <option value="US">🇺🇸 United States</option>
+              <option value="UK">🇬🇧 United Kingdom</option>
+              <option value="IN">🇮🇳 India</option>
+              <option value="JP">🇯🇵 Japan</option>
+              <option value="DE">🇩🇪 Germany</option>
+            </select>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">

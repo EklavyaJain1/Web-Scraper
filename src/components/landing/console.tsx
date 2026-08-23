@@ -13,6 +13,8 @@ import {
 import { Eyebrow, Reveal, Section } from "./primitives";
 import { CobeGlobe } from "./cobe-globe";
 import { Typewriter } from "@/components/ui/typewriter";
+import { GeoNetworkModal } from "./node-modals";
+import { useState } from "react";
 
 const LIVE_ACTIVITY = [
   {
@@ -50,6 +52,8 @@ const LIVE_ACTIVITY = [
 ];
 
 export function Console() {
+  const [showGeoModal, setShowGeoModal] = useState(false);
+
   return (
     <Section id="console" className="py-16 md:py-24">
       <Reveal>
@@ -67,18 +71,21 @@ export function Console() {
       <Reveal delay={120}>
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {/* LEFT PANEL: Globe / Geo Network */}
-          <div className="flex flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift">
-            <div className="p-8 pb-0 flex-1 flex flex-col justify-center">
+          <div 
+            onClick={() => setShowGeoModal(true)}
+            className="flex cursor-pointer flex-col justify-between overflow-hidden rounded-[24px] border border-hairline bg-card shadow-lift transition-all hover:border-brand/50 hover:shadow-glow hover:scale-[1.01]"
+          >
+            <div className="p-8 pb-0 flex-1 flex flex-col justify-center pointer-events-none">
               <CobeGlobe />
             </div>
             
             <div className="border-t border-hairline bg-surface p-6 mt-4">
               <h3 className="flex items-center gap-2 text-[18px] font-bold text-ink">
                 <Globe2 className="size-5 text-brand" />
-                Bright Data Web Unlocker
+                Geo Network Routing
               </h3>
               <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
-                Route scraping traffic through Bright Data's proxy network. Bypass anti-bot protection and get clean, structured data from any public website.
+                Route scraping traffic through Bright Data's global proxy network. Target specific locales to bypass geographic restrictions and extract localized pricing and content from any country.
               </p>
             </div>
           </div>
@@ -154,6 +161,7 @@ export function Console() {
           </div>
         </div>
       </Reveal>
+      <GeoNetworkModal open={showGeoModal} onOpenChange={setShowGeoModal} />
     </Section>
   );
 }

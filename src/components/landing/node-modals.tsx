@@ -662,12 +662,53 @@ function GeoNetworkModal({ open, onOpenChange }: { open: boolean; onOpenChange: 
           </div>
 
           <div className="rounded-xl border border-brand/30 bg-brand/5 p-3 flex items-start gap-3">
-            <span className="relative flex size-2.5 mt-1">
+            <span className="relative flex size-2.5 mt-1 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
               <span className="relative inline-flex rounded-full size-2.5 bg-brand"></span>
             </span>
             <div className="text-xs text-brand-foreground">
               <strong>Routing Active:</strong> Traffic will be routed through {proxyType} IPs in the selected region.
+            </div>
+          </div>
+
+          <div className="mt-4 border-t border-hairline pt-4">
+            <span className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Live Extraction Preview</span>
+            <div className="rounded-lg border border-hairline bg-surface p-3 shadow-inner">
+              {country === "US" && (
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Currency:</span> <span className="font-mono text-ink">USD ($)</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Price:</span> <span className="font-mono text-success">$1,299.00</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Promo:</span> <span className="font-mono text-brand">Free US Shipping</span></div>
+                </div>
+              )}
+              {country === "UK" && (
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Currency:</span> <span className="font-mono text-ink">GBP (£)</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Price:</span> <span className="font-mono text-success">£1,099.00</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Promo:</span> <span className="font-mono text-brand">Next Day Delivery (UK)</span></div>
+                </div>
+              )}
+              {country === "IN" && (
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Currency:</span> <span className="font-mono text-ink">INR (₹)</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Price:</span> <span className="font-mono text-success">₹1,09,900</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Promo:</span> <span className="font-mono text-brand">Diwali Special Offer</span></div>
+                </div>
+              )}
+              {country === "JP" && (
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Currency:</span> <span className="font-mono text-ink">JPY (¥)</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Price:</span> <span className="font-mono text-success">¥195,000</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Promo:</span> <span className="font-mono text-brand">Points x5 Multiplier</span></div>
+                </div>
+              )}
+              {country === "DE" && (
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Currency:</span> <span className="font-mono text-ink">EUR (€)</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Price:</span> <span className="font-mono text-success">€1,199.00</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Promo:</span> <span className="font-mono text-brand">Includes 19% VAT</span></div>
+                </div>
+              )}
             </div>
           </div>
 
