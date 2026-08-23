@@ -312,25 +312,7 @@ export function Hero() {
         </Reveal>
       </Section>
 
-      <Section className="py-12 md:py-16">
-        <Reveal>
-          <h2 className="text-center text-[12.5px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            Powered by
-          </h2>
-          <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-            <div className="flex w-max animate-marquee items-center gap-14">
-              {["Bright Data", "Gemini AI", "TanStack", "React 19", "Tailwind CSS", "shadcn/ui", "Bright Data", "Gemini AI", "TanStack", "React 19", "Tailwind CSS", "shadcn/ui"].map((logo, i) => (
-                <span
-                  key={`${logo}-${i}`}
-                  className="whitespace-nowrap font-display text-xl font-bold tracking-tight text-ink/25"
-                >
-                  {logo}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-      </Section>
+
     </div>
   );
 }
