@@ -103,7 +103,7 @@ export function Logo({ className }: { className?: string }) {
       <span className="relative grid size-8 place-items-center rounded-[10px] gradient-brand shadow-soft">
         <span className="size-3 rounded-[4px] bg-brand-foreground/90" />
       </span>
-      <span className="font-display text-[17px] font-semibold tracking-tight text-ink">
+      <span className="font-display text-xl font-extrabold tracking-tight text-ink">
         Web Miner
       </span>
     </span>

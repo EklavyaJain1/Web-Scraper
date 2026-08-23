@@ -5,10 +5,7 @@ import { cn } from "@/lib/utils";
 
 import { Button3D } from "@/components/ui/button-3d";
 
-const NAV = [
-  { label: "Product", href: "#product" },
-  { label: "Live Demo", href: "/dashboard" },
-];
+const NAV: any[] = [];
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);

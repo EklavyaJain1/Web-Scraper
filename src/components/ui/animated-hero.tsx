@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
+import { Button3D } from "@/components/ui/button-3d";
+
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
@@ -61,25 +63,29 @@ function Hero() {
             </h1>
 
             <p className="mx-auto mt-2 max-w-xl text-[16px] leading-relaxed text-ink-soft sm:text-[17px]">
-              Web Miner is a self-healing web scraper that automatically repairs broken selectors
-              when websites change their layout. Powered by Bright Data and Gemini AI.
+              <span className="font-extrabold text-xl text-ink">Web Miner</span> is a self-healing web scraper that automatically repairs broken selectors
+              when websites change their layout.
             </p>
           </div>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            <a
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+            <Button3D
+              as="a"
               href="/dashboard"
-              className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-brand-foreground shadow-lift transition-transform hover:-translate-y-0.5"
+              variant="primary"
+              size="lg"
             >
-              Try the Demo <ArrowRight className="size-4" />
-            </a>
-            <a
+              Try the Demo <ArrowRight className="size-4 ml-2" />
+            </Button3D>
+            <Button3D
+              as="a"
               href="https://github.com/EklavyaJain1/gumloop-reimagined"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-card px-6 py-3 text-[15px] font-medium text-ink transition-colors hover:bg-surface-2"
+              variant="secondary"
+              size="lg"
             >
               View Source
-            </a>
+            </Button3D>
           </div>
         </div>
       </div>
