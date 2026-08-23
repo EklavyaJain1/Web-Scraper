@@ -18,7 +18,6 @@ import {
   Wrench,
   ArrowLeft,
 } from "lucide-react";
-import { Logo } from "@/components/landing/primitives";
 import { cn } from "@/lib/utils";
 import { runIntelligencePipeline, runSelfHeal, approveHeal } from "@/lib/pipeline";
 import type { AlertData, ScraperModule } from "@/lib/pipeline";
@@ -185,7 +184,6 @@ export function IntelligenceCanvas() {
           <Link to="/" className="mr-2 rounded-md p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-ink">
             <ArrowLeft className="size-4" />
           </Link>
-          <Logo />
           <div className="relative ml-4 flex max-w-sm items-center">
             <Search className="absolute left-3 size-4 text-muted-foreground" />
             <input

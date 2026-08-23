@@ -13,10 +13,10 @@ import {
 import { useState } from "react";
 import { Eyebrow, Reveal, Section } from "./primitives";
 import { 
-  TriggerModal, 
-  ScraperStudioModal, 
-  SelfHealingModal, 
-  MCPOutputModal, 
+  TriggerModal,
+  ScraperStudioModal,
+  SelfHealingModal,
+  MCPOutputModal,
   LLMExtractModal,
   FilterModal,
   WarehouseModal,

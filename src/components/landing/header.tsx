@@ -21,17 +21,28 @@ export function SiteNav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 transition-colors duration-300 bg-background/60 backdrop-blur-xl",
+        "sticky top-0 z-50 transition-colors duration-300 bg-background/60 backdrop-blur-xl relative",
       )}
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-3 items-center gap-4 px-5 py-3.5 sm:px-8">
-        <div className="flex justify-start">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            onClick={() => setOpen((v) => !v)}
+            className="grid size-9 shrink-0 place-items-center rounded-full border border-hairline text-ink"
+          >
+            {open ? <X className="size-4" /> : <Menu className="size-4" />}
+          </button>
+        </div>
+
+        <div className="absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2">
           <a href="#top" aria-label="Web Miner home" className="min-w-0">
             <Logo />
           </a>
         </div>
 
-        <nav className="hidden items-center justify-center gap-4 md:flex">
+        <nav className="hidden items-center gap-4 md:flex">
           {NAV.map((item, idx) => (
             <Button3D
               key={item.label}
@@ -44,19 +55,6 @@ export function SiteNav() {
             </Button3D>
           ))}
         </nav>
-
-        <div className="hidden md:flex justify-end" />
-
-        <div className="flex justify-end md:hidden">
-          <button
-            type="button"
-            aria-label="Toggle menu"
-            onClick={() => setOpen((v) => !v)}
-            className="grid size-9 shrink-0 place-items-center rounded-full border border-hairline text-ink md:hidden"
-          >
-            {open ? <X className="size-4" /> : <Menu className="size-4" />}
-          </button>
-        </div>
       </div>
 
       {open && (
